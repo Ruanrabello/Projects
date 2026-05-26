@@ -1,0 +1,15 @@
+{
+  "high_score": 0,
+  "total_kills": 0,
+  "best_floor": 1,
+  "unlocked_achievements": [],
+  "settings": {
+    "master_volume": 0.7,
+    "music_volume": 0.45,
+    "sfx_volume": 0.8,
+    "fullscreen": false,
+    "particles": true,
+    "screen_shake": true
+  },
+  "last_played": "2026-05-20T15:16:37.062293"
+}
