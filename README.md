@@ -1,4 +1,4 @@
-# 🐍 Projects
+#  Projects
 
 Repositório dedicado aos meus estudos e projetos desenvolvidos em **Python, JavaScript, React, css, html  etc**.
 Aqui você encontrará diferentes implementações, testes e aplicações práticas que fazem parte do meu processo de aprendizado e evolução na programação.
