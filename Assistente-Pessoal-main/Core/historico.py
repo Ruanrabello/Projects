@@ -1,7 +1,9 @@
 import json
 import os
+from pathlib import Path
 
-CAMINHO_HISTORICO = "C:/Users/ruanb/Downloads/AssistenteV2/data/Historico.json"
+BASE_DIR = Path(__file__).resolve().parent.parent
+CAMINHO_HISTORICO = BASE_DIR / "data" / "Historico.json"
 
 
 def limpar_texto(texto):
@@ -21,6 +23,7 @@ def carregar_historico():
 
 
 def salvar_historico(historico):
+    CAMINHO_HISTORICO.parent.mkdir(parents=True, exist_ok=True)
     with open(CAMINHO_HISTORICO, "w", encoding="utf-8") as f:
         json.dump(historico, f, ensure_ascii=False, indent=2)
 

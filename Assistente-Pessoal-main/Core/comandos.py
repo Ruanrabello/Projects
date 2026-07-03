@@ -1,13 +1,13 @@
 # ? Importa o modulu que permite que o python abra urls no navegador, como youtube etc
+import os
 import webbrowser
 import datetime  # ? módulo de data/hora
-import os  # ? módulo do sistema operacional
 # ? importa a função build da biblioteca googleapiclient. Esta função é crucial para conectar seu código à API de Dados do YouTube.
 from googleapiclient.discovery import build
 import pyautogui  # ? Importa biblioteca que simula comandos do teclado
 import time  # ? Importa biblioteca com funçoes de tempo
 
-YOUTUBE_API_KEY = "your-youtube-api-key-here"
+YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY", "your-youtube-api-key-here")
 # ? Cria um objeto chamado youtube que será usado para fazer todas as chamadas à API, meio que o telefone para ligar para o servidor
 youtube = build("youtube", "v3", developerKey=YOUTUBE_API_KEY)
 
