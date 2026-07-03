@@ -1,0 +1,385 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;                                                                                            /* Remove a margem padrão do navegador no body, garantindo que o conteúdo ocupe toda a largura da janela. */
+    min-height: 100vh;                                                                                    /* Garante que o body tenha pelo menos a altura da janela (viewport), evitando que o conteúdo fique muito pequeno em telas maiores. */
+    font-family: "Inter", Arial, sans-serif;                                                              /* Define a família de fontes para o texto da página, priorizando a fonte "Inter" e usando Arial ou sans-serif como fallback. */
+    background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.75), transparent 25%),        /* Define um plano de fundo com um gradiente radial que começa no canto superior esquerdo, criando um efeito de luz suave. */
+                radial-gradient(circle at bottom right, rgba(91, 109, 255, 0.2), transparent 20%),      /* Adiciona um segundo gradiente radial no canto inferior direito para complementar o efeito de luz. */
+                linear-gradient(135deg, #d0d3d3 0%, #105769 100%);                                    /* Define um gradiente linear de fundo que vai do azul claro ao azul escuro, criando um visual moderno e atraente. */
+    color: #1f3247;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.weather-app {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+}
+
+.Weather-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    transition: all 0.5s ease;
+}
+
+.Weather-container.show-result {
+    justify-content: center;
+    gap: 10px;
+}
+
+.Weather-container.show-result .weather-card {
+    transform: translateX(-30px);
+}
+
+.Weather-container.show-result .forecast-panel {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+
+.weather-card {
+    flex: 0 0 400px;
+    min-height: 520px;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 32px;
+    box-shadow: 0 25px 60px rgba(32, 73, 105, 0.1);
+    padding: 40px;
+    backdrop-filter: blur(20px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.5s ease;
+
+
+}
+
+.weather-header {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.weather-icon {
+    font-size: 3rem;
+}
+
+h1 {
+    margin: 0;
+    font-size: 1.75rem;
+    color: #1a365d;
+    font-weight: 700;
+}
+
+.subtitle {
+    margin: 6px 0 0;
+    color: #4a5568;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #2c5282;
+}
+
+input {
+    width: 100%;
+    padding: 16px 20px;
+    border-radius: 20px;
+    border: 1px solid rgba(43, 108, 176, 0.15);
+    background: rgba(247, 250, 252, 0.9);
+    font-size: 1.1rem;
+    color: #2d3748;
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: #3182ce;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(49, 130, 206, 0.15);
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 18px;
+    border: none;
+    border-radius: 20px;
+    background: #3182ce;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(49, 130, 206, 0.25);
+    transition: all 0.2s ease;
+}
+
+button[type="submit"]:hover {
+    background: #2b6cb0;
+    transform: translateY(-2px);
+}
+
+/* Painel Direito (Super limpo, claro e translúcido) */
+.forecast-panel {
+    flex: 0 0 400px;
+    min-height: 520px;
+
+    /* Fundo da imagem */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(img/Default.jpg);
+
+    /* Glassmorphism */
+    backdrop-filter: blur(10px);
+    border: 5px solid rgb(255, 255, 255);
+
+    border-radius: 32px;
+    padding: 35px;
+
+    color: #ffffff;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+
+    opacity: 0;
+    transform: translateX(100px);
+    transition: all 0.5s ease;
+
+    position: relative;
+    overflow: visible;
+}
+
+.forecast-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.35);
+
+    border-radius: 32px;
+
+    z-index: 0;
+}
+
+.forecast-panel > * {
+    position: relative;
+    z-index: 1;
+}
+
+.forecast-panel h2 {
+    margin: 0 0 15px 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-align: center;
+    color: #ffffff;
+}
+
+.forecast-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* Setas Finas e Delicadas */
+.nav-btn {
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.3);
+    color: #1a365d;
+    border-radius: 12px;
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+/* Bloco de Conteúdo Interno Branco */
+#card-content {
+    #card-content {
+    flex: 1;
+    background: #ffffff;
+    color: #2d3748;
+    border-radius: 24px;
+
+    border: 2px solid #ffffff; /* borda branca */
+
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+}
+
+#card-title {
+    margin: 0 0 8px 0;
+    font-size: 1.1rem;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+#card-value {
+    margin: 0;
+    font-size: 1rem;
+    color: #ffffff;
+    font-weight: 700; /* Negrito */
+}
+
+/* Estilização da Nova Barra de Ícones (Igual à foto 1) */
+.weather-options-bar {
+    display: flex;
+    flex-wrap: wrap;          /* quebra em 2 linhas se necessário */
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.option-btn {
+    flex: 0 0 calc(25% - 6px); /* 4 por linha → 4+3 */
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    padding: 10px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.option-btn:hover {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+/* Quando a opção estiver ativa, ela ganha fundo branco total */
+.option-btn.active {
+    background: #ffffff;
+    border-color: #ffffff;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+.option-icon {
+    font-size: 1.3rem;
+}
+
+.option-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+/* Paginação e Rodapé */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 15px;
+}
+
+.dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(26, 54, 93, 0.2);
+    transition: all 0.3s ease;
+}
+
+.dot.active {
+    background: #1a365d;
+    width: 18px;
+    border-radius: 4px;
+}
+
+.ver-tudo-container {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.ver-tudo-btn {
+    background: none;
+    border: none;
+    color: #1a365d;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.weather-footer {
+    margin-top: 25px;
+    text-align: center;
+    color: #718096;
+    font-size: 0.9rem;
+}
+
+.highlight-footer {
+    font-weight: 600;
+    color: #2d3748;
+}
+
+@media (max-width: 900px) {
+    .Weather-container {
+        flex-direction: column;
+    }
+}
+
+.botao-reset {
+    background: #9c0404;
+    color: rgb(0, 0, 0);
+    border: none;
+    padding: 6px 10px;
+    border-radius: 13px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all .3s ease;
+    position: absolute;
+
+    top: 35px;
+
+    right: -65px; /* sai para fora do card */
+    width: 30px;
+
+    height: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,.15);
+
+}
+
+.botao-reset:hover {
+    transform: rotate(180deg) scale(1.1);
+    background: rgba(255,255,255,.4);
+}

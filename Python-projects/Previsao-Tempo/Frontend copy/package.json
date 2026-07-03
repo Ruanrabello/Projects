@@ -1,0 +1,13 @@
+{
+  "name": "previsao-tempo",
+  "version": "1.0.0",
+  "description": "Aplicação web para consultar previsões meteorológicas",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python -m http.server 3000"
+  },
+  "keywords": ["weather", "previsão", "tempo"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {}
+}
