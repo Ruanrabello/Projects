@@ -77,4 +77,4 @@ Contribuições são bem-vindas. Se quiser melhorar o jogo, corrigir bugs ou adi
 
 ## 📄 Licença
 
-Este projeto ainda não possui uma licença definida. Caso queira, você pode adicionar uma licença no repositório antes de publicar.
+Ruan rabello
