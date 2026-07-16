@@ -8,45 +8,14 @@ import {
   ChevronRight
 } from "lucide-react";
 
-
+import api from "../../Services/api";
+import { useNavigate } from "react-router-dom";
 
 import { NavLink } from "react-router-dom";
 
 import ConversasRecentes from "./RecentActivities";
 
 
-const menu = [
-  {
-    icon: LayoutDashboard,
-    label: "Dashboard",
-    path: "/"
-  },
-
-  {
-    icon: MessageSquare,
-    label: "Chat",
-    path: "/chat"
-  },
-
-  {
-    icon: FileText,
-    label: "Documentos",
-    path: "/documents"
-  },
-
-  {
-    icon: Settings,
-    label: "Configurações",
-    path: "/settings"
-  },
-
-   {
-    icon: BarChart3,
-    label: "Relatórios",
-    path: "/relatorio"
-  },
-
-];
 
 interface Sidebar_Estado_Minimizado_Cheia {
   collapsed: boolean;
@@ -54,12 +23,67 @@ interface Sidebar_Estado_Minimizado_Cheia {
 }
 
 function Sidebar({ collapsed, onToggle }: Sidebar_Estado_Minimizado_Cheia) {
+  const navigate = useNavigate();
+
+  async function CriarNovaConversa() {
+    try {
+
+      const response = await api.post("/chat/conversas",{
+        titulo: "Nova conversa"                               /*Preciso mecher nisso depois para o titulo que ser automatico gerado pela ia */
+      });
+
+      const conversa = response.data;
+
+      navigate(`/chat/${conversa.id}`);
+     }catch(error){
+
+    console.error("Erro ao criar conversa", error);
+
+    }
+  }
+
+  const menu = [
+
+    {
+      icon: MessageSquare,
+      label: "New Chat",
+      action: CriarNovaConversa
+    },
+
+    {
+      icon: LayoutDashboard,
+      label: "Dashboard",
+      path: "/"
+    },
+
+    {
+      icon: BarChart3,
+      label: "Relatórios",
+      path: "/relatorio"
+    },
+
+    {
+      icon: FileText,
+      label: "Documentos",
+      path: "/documents"
+    },
+
+    {
+      icon: Settings,
+      label: "Configurações",
+      path: "/settings"
+    },
+
+  ];
+
+
   return (
 
     <aside
       className={`
         ${collapsed ? "w-20" : "w-75"}
         bg-slate-900
+        h-screen
         border-r
         border-slate-800
         p-1.5
@@ -104,37 +128,89 @@ function Sidebar({ collapsed, onToggle }: Sidebar_Estado_Minimizado_Cheia) {
 
       <nav className="mt-10 space-y-2">
 
-        {menu.map(({ icon: Icon, label, path }) => (
+        {menu.map(({ icon: Icon, label, path, action }) => (
 
-          <NavLink
-            key={label}
-            to={path}
-            className={({ isActive }) =>
-              `flex items-center gap-3 rounded-lg p-3 transition ${
-                isActive
-                ? "bg-slate-700 text-white"
-                : "hover:bg-slate-800 text-slate-300"
-              }`
-            }
-          >
+          action ? (
 
-            <Icon size={15}/>
+            <button
+              key={label}
+              onClick={action}
+              className="
+                flex
+                items-center
+                gap-3
+                rounded-lg
+                p-3
+                transition
+                hover:bg-slate-800
+                text-slate-300
+                w-full
+              "
+            >
 
-            {!collapsed && (
-              <span>{label}</span>
-            )}
+              <Icon size={15}/>
 
-          </NavLink>
+              {!collapsed && (
+                <span>{label}</span>
+              )}
+
+            </button>
+
+
+          ) : (
+
+
+            <NavLink
+              key={label}
+              to={path!}
+              className={({isActive}) =>
+                `
+                flex
+                items-center
+                gap-3
+                rounded-lg
+                p-3
+                transition
+                ${
+                  isActive
+                  ? "bg-slate-700 text-white"
+                  : "hover:bg-slate-800 text-slate-300"
+                }
+                `
+              }
+            >
+
+              <Icon size={15}/>
+
+              {!collapsed && (
+                <span>{label}</span>
+              )}
+
+            </NavLink>
+
+
+          )
 
         ))}
 
       </nav>
 
 
-      <div className="flex-1 overflow-y-auto pt-6 pb-6 px-3">
+      <div
+        className="
+          flex-1
+          overflow-hidden
+          pt-6
+          px-3
+        "
+      >
+
         {!collapsed && (
-          <ConversasRecentes />
+          <div className="h-full overflow-y-auto">
+            <ConversasRecentes />
+          </div>
         )}
+
       </div>
 
 

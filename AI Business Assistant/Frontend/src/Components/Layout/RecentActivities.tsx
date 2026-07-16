@@ -1,26 +1,49 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../../Services/api";
 import type { Conversa } from "../../types/conversa";
+
 
 function ConversasRecentes() {
 
     const [conversas, setConversas] = useState<Conversa[]>([])
 
+    const location = useLocation();
+
     useEffect(() => {
 
-        api.get("/chat/conversas")
-            .then(response => {
-                setConversas(response.data)
-            })
-            .catch(error => {
-                console.error(error)
-            })
-    }, [])
+        let ativo = true;
+
+        async function carregarConversas() {
+
+            try {
+                const response = await api.get("/chat/conversas");
+
+                if(ativo){
+                    setConversas(response.data);
+                }
+
+
+
+            }catch(error){
+                console.error(error);
+
+            }
+
+        }
+
+        carregarConversas();
+        return () => {
+            ativo = false;
+        };
+
+
+    }, [location.pathname]);
+
+
 
     return(
         <div className="
-            h-full
             flex
             flex-col
             rounded-xl

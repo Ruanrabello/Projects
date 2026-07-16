@@ -30,12 +30,10 @@ Vamos desenvolver como uma empresa faria:
 Sprint 1: Estrutura e interface  -- Foi
     obs: hj existe dados mockados, principalmete ali no sidebar nas conersas recentes, dp que o backend tiver pronto vc pode deletar a pasta data e conectar aos dados reais
 
-Sprint 2: Backend (FastAPI) -- Em andamento
-    aonde parei conectei o sidebar das conversas recentes com o banco
-    Parei na parte que vou Criar um botao chamado nova conversa e a ia vai gerar um titulo IA gera automaticamente (mais profissional)
+Sprint 2: Backend (FastAPI) -- Foi
 
+Sprint 3: Banco de dados -- foi
 
-Sprint 3: Banco de dados
 Sprint 4: Autenticação
     principalmente em services e chat pq atualmente esta pegando os usuarios so do id 1 e precisa ser conforme logar, porem precisa do sistema para logar
 Sprint 5: IA (Ollama + RAG)
@@ -60,6 +58,18 @@ app.add_middleware(
 )
 
 dps verificar isso que colocou no seu main.py pq ele abre muitas portas de seguranca
+
+verificar o chat.py em routers no backend pq ele so esta pegando usuarios com o id 1
+
+preciso colocar uma opcao de minimizar chats recentes e deletar chats
+
+ta com um erro que se eu fazer uma peregunta em um chat vai aparecer em todos, pensando ...
+
+resolver a questao do pluguin e formatacao
+
+
+
+
 
 
 

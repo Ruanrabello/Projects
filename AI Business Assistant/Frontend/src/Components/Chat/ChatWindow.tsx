@@ -1,10 +1,11 @@
 import ChatInput from "./ChatInput";
-import { useState } from "react";
 import MensagemChat from "./ChatMessage";
+import api from "../../Services/api";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 
 type MensagemChatPropriedades = {
-    id: number;
+    id: number | string;
     usuario: "user" | "ai";
     texto: string;
 };
@@ -16,30 +17,74 @@ type ChatWindowProps = {
 
 function ChatWindow({ conversaId }: ChatWindowProps){
 
-const [mensagens, setMensagens] = useState<MensagemChatPropriedades[]>([
-  {
-    id: 1,
-    usuario: "ai",
-    texto: "Olá! Sou seu assistente de IA. Como posso ajudar?",
-  },
-]);
+  const [mensagens, setMensagens] = useState<MensagemChatPropriedades[]>([]);
+  const [texto, setTexto] = useState("");
+  const [carregandoResposta, setCarregandoResposta] = useState(false);
 
-<h1>{conversaId}</h1>
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-const [texto, setTexto] = useState("");
+  const carregarMensagens = useCallback(async () => {
+    if (!conversaId) return;
+    try {
+      const response = await api.get(`/chat/${conversaId}/mensagens`);
+      setMensagens(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [conversaId]);
 
-function enviarMensagem() {
-  if (texto.trim() === "") return;
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    carregarMensagens();
+  }, [carregarMensagens]);
 
-  const novaMensagem = {
-    id: mensagens.length + 1,
-    usuario: "user" as const,
-    texto: texto,
-  };
+  // auto-scroll sempre que mensagens mudar ou a IA começar/parar de "pensar"
+  useEffect(() => {
+    scrollRef.current?.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [mensagens, carregandoResposta]);
 
-  setMensagens([...mensagens, novaMensagem]);
 
-  setTexto("");
+  async function enviarMensagem() {
+
+    if (texto.trim() === "") return;
+
+    const textoEnviado = texto;
+
+    // 1. Mostra a mensagem do usuário na hora (optimistic update)
+    const mensagemTemporaria: MensagemChatPropriedades = {
+      id: `temp-${Date.now()}`,
+      usuario: "user",
+      texto: textoEnviado,
+    };
+
+    setMensagens((atual) => [...atual, mensagemTemporaria]);
+    setTexto("");
+    setCarregandoResposta(true);
+
+    try {
+
+      await api.post(`/chat/${conversaId}/mensagens`, {
+        usuario: "user",
+        texto: textoEnviado,
+      });
+
+      // 2. Busca o estado real (mensagem do usuário salva + resposta da IA, quando o backend passar a gerar)
+      await carregarMensagens();
+
+    } catch (error) {
+
+      console.error(error);
+
+      // reverte a mensagem otimista se der erro
+      setMensagens((atual) => atual.filter((m) => m.id !== mensagemTemporaria.id));
+
+    } finally {
+      setCarregandoResposta(false);
+    }
+
 }
 
 return (
@@ -47,13 +92,14 @@ return (
 <div className="
 flex
 flex-col
-h-[calc(100vh-160px)]
+h-full
+min-h-0
 ">
 
 
-
-
-<div className="
+<div
+  ref={scrollRef}
+  className="
 flex-1
 space-y-4
 overflow-y-auto
@@ -62,16 +108,52 @@ border
 border-slate-800
 rounded-xl
 bg-slate-950
-">
+"
+>
 
+{mensagens.length === 0 && !carregandoResposta ? (
+  <div className="h-full flex flex-col items-center justify-center text-center gap-2">
+    <h2 className="text-2xl font-semibold text-white">
+      Como posso ajudar hoje?
+    </h2>
+    <p className="text-slate-400 max-w-md">
+      Envie uma mensagem para começar a conversa com seu assistente.
+    </p>
+  </div>
+) : (
+  <>
+    {mensagens.map((mensagem) => (
+      <MensagemChat
+        key={mensagem.id}
+        texto={mensagem.texto}
+        usuario={mensagem.usuario}
+      />
+    ))}
 
-{mensagens.map((mensagem) => (
-  <MensagemChat
-    key={mensagem.id}
-    texto={mensagem.texto}
-    usuario={mensagem.usuario}
-  />
-))}
+    {carregandoResposta && (
+      <div className="flex justify-start">
+        <div className="
+          max-w-[70%]
+          rounded-xl
+          px-4
+          py-3
+          bg-slate-800
+          text-slate-400
+          flex
+          items-center
+          gap-1
+        ">
+          <span>Pensando</span>
+          <span className="flex gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce [animation-delay:-0.3s]" />
+            <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce [animation-delay:-0.15s]" />
+            <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" />
+          </span>
+        </div>
+      </div>
+    )}
+  </>
+)}
 
 </div>
 

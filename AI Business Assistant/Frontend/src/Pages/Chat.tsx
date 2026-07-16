@@ -6,19 +6,10 @@ function Chat() {
   const { id } = useParams();
 
   return (
-    <div>
+    <div className="h-full min-h-0">
 
-      <h1 className="text-3xl font-bold">
-        Chat
-      </h1>
+      <ChatWindow conversaId={id} />
 
-      <p className="text-slate-400 mt-2">
-        Converse com seu assistente inteligente.
-      </p>
-
-      <div className="mt-8">
-        <ChatWindow  conversaId={id} />
-      </div>
     </div>
   );
 }
