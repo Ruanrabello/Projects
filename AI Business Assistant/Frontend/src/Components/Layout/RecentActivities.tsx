@@ -1,25 +1,23 @@
 import { NavLink } from "react-router-dom";
-
-const Conversas = [
-    {
-        id: 1,
-        titulo: "Posicionar Avatar Sidebar"
-    },
-    {
-        id: 2,
-        titulo: "Erro no path do menu"
-    },
-    {
-        id: 3,
-        titulo: "Problema Netflix opera"
-    },
-    {
-        id: 4,
-        titulo: "Guia React"
-    }
-];
+import { useEffect, useState } from "react";
+import api from "../../Services/api";
+import type { Conversa } from "../../types/conversa";
 
 function ConversasRecentes() {
+
+    const [conversas, setConversas] = useState<Conversa[]>([])
+
+    useEffect(() => {
+
+        api.get("/chat/conversas")
+            .then(response => {
+                setConversas(response.data)
+            })
+            .catch(error => {
+                console.error(error)
+            })
+    }, [])
+
     return(
         <div className="
             h-full
@@ -49,7 +47,7 @@ function ConversasRecentes() {
                 space-y-1
             ">
 
-                {Conversas.map((conversa) => (
+                {conversas.map((conversa) => (
 
                     <NavLink
                         key={conversa.id}

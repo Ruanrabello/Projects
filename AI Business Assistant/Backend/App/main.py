@@ -11,9 +11,23 @@ from database.models.Usuario import Usuario
 
 from database.database import Base, engine
 
+from fastapi.middleware.cors import CORSMiddleware
+
+
 app = FastAPI(
     title="AI Business Assistant API"
 )
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 Base.metadata.create_all(bind=engine)
 
