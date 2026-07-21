@@ -8,6 +8,7 @@ type MensagemChatPropriedades = {
     id: number | string;
     usuario: "user" | "ai";
     texto: string;
+    modelo?: string | null;
 };
 
 type ChatWindowProps = {
@@ -20,6 +21,7 @@ function ChatWindow({ conversaId }: ChatWindowProps){
   const [mensagens, setMensagens] = useState<MensagemChatPropriedades[]>([]);
   const [texto, setTexto] = useState("");
   const [carregandoResposta, setCarregandoResposta] = useState(false);
+  const [configuracaoOk, setConfiguracaoOk] = useState<boolean | null>(null);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -38,7 +40,19 @@ function ChatWindow({ conversaId }: ChatWindowProps){
     carregarMensagens();
   }, [carregarMensagens]);
 
-  // auto-scroll sempre que mensagens mudar ou a IA começar/parar de "pensar"
+  useEffect(() => {
+    async function verificarConfiguracao() {
+      try {
+        const response = await api.get("/configuracoes/ia");
+        setConfiguracaoOk(!!response.data);
+      } catch (error) {
+        console.error(error);
+        setConfiguracaoOk(false);
+      }
+    }
+    verificarConfiguracao();
+  }, []);
+
   useEffect(() => {
     scrollRef.current?.scrollTo({
       top: scrollRef.current.scrollHeight,
@@ -49,11 +63,10 @@ function ChatWindow({ conversaId }: ChatWindowProps){
 
   async function enviarMensagem() {
 
-    if (texto.trim() === "") return;
+    if (texto.trim() === "" || !configuracaoOk) return;
 
     const textoEnviado = texto;
 
-    // 1. Mostra a mensagem do usuário na hora (optimistic update)
     const mensagemTemporaria: MensagemChatPropriedades = {
       id: `temp-${Date.now()}`,
       usuario: "user",
@@ -71,14 +84,12 @@ function ChatWindow({ conversaId }: ChatWindowProps){
         texto: textoEnviado,
       });
 
-      // 2. Busca o estado real (mensagem do usuário salva + resposta da IA, quando o backend passar a gerar)
       await carregarMensagens();
 
     } catch (error) {
 
       console.error(error);
 
-      // reverte a mensagem otimista se der erro
       setMensagens((atual) => atual.filter((m) => m.id !== mensagemTemporaria.id));
 
     } finally {
@@ -127,6 +138,7 @@ bg-slate-950
         key={mensagem.id}
         texto={mensagem.texto}
         usuario={mensagem.usuario}
+        modelo={mensagem.modelo}
       />
     ))}
 
@@ -163,7 +175,14 @@ bg-slate-950
     texto={texto}
     aoAlterarTexto={setTexto}
     aoEnviar={enviarMensagem}
+    desabilitado={configuracaoOk === false}
 />
+
+{configuracaoOk === false && (
+  <p className="text-sm text-red-400 mt-2 text-center">
+    Nenhum modelo de IA configurado. Acesse Configurações para escolher um provedor.
+  </p>
+)}
 </div>
 
 

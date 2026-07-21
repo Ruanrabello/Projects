@@ -5,6 +5,7 @@ type ChatInputProps = {
   texto: string;
   aoAlterarTexto: (texto: string) => void;
   aoEnviar: () => void;
+  desabilitado?: boolean;
 };
 
 
@@ -12,12 +13,13 @@ function ChatInput({
   texto,
   aoAlterarTexto,
   aoEnviar,
+  desabilitado
 }: ChatInputProps) {
 
 
   function enviar() {
 
-    if (texto.trim() === "") return;
+    if (texto.trim() === "" || desabilitado) return;
 
     aoEnviar();
 
@@ -41,10 +43,13 @@ function ChatInput({
     >
 
       <button
+        disabled={desabilitado}
         className="
           text-slate-400
           hover:text-white
           transition
+          disabled:opacity-40
+          disabled:cursor-not-allowed
         "
       >
         <Paperclip size={20}/>
@@ -67,7 +72,9 @@ function ChatInput({
 
         }}
 
-        placeholder="Envie uma mensagem..."
+        placeholder={desabilitado ? "Configure um modelo de IA primeiro..." : "Envie uma mensagem..."}
+
+        disabled={desabilitado}
 
         className="
           flex-1
@@ -75,6 +82,8 @@ function ChatInput({
           outline-none
           text-white
           placeholder:text-slate-500
+          disabled:cursor-not-allowed
+          disabled:opacity-50
         "
 
       />
@@ -82,7 +91,7 @@ function ChatInput({
 
       <button
         onClick={enviar}
-        disabled={texto.trim() === ""}
+        disabled={texto.trim() === "" || desabilitado}
         className="
           rounded-xl
          bg-white
@@ -90,6 +99,7 @@ function ChatInput({
          text-black
          hover:bg-slate-200
           disabled:opacity-40
+          disabled:cursor-not-allowed
          transition
         "
       >

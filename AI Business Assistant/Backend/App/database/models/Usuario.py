@@ -17,3 +17,9 @@ class Usuario(Base):
         "Conversa",
         back_populates="usuario"
     )
+
+    configuracao_ia = relationship(
+        "ConfiguracaoIA",
+        back_populates="usuario",
+        uselist=False
+    )

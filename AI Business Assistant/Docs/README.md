@@ -1,123 +1,161 @@
-📦 Enterprise AI Assistant
+# AI Business Assistant
 
-Comandos Importantes:
+Assistente de IA para uso empresarial, com chat conversacional, suporte a múltiplos
+provedores de modelos de linguagem (Ollama local, Gemini e Grok), gestão de
+documentos e geração de relatórios.
 
-uvicorn main:app --reload -- Iniciar api local (abrir main.py no terminal) -- Backend
-http://127.0.0.1:8000/docs#/ -- para testar os endpoints
-cd Frontend; npm run dev -- rodar serve local react  -- Frontend
+## Stack
 
-Links importantes:
-link database:https://supabase.com/dashboard/project/ynuyddotzgbpezhvxqil/database/schemas
+**Backend**
+- FastAPI
+- SQLAlchemy + PostgreSQL
+- LangChain (integração com Ollama)
+- Pydantic
 
+**Frontend**
+- React + Vite
+- TypeScript
+- Tailwind CSS v4
+- React Router
+- Axios
+- react-markdown + remark-gfm
 
-🤖 Agente de IA
-💬 WhatsApp
-📄 Leitura de PDFs, Word e Excel
-🧠 RAG
-📊 Dashboard
-👥 Login de usuários
-📈 Estatísticas
-📂 Upload de documentos
-⚙️ Automações (relatórios, e-mails, planilhas)
-🔌 Integração com APIs
+## Funcionalidades
 
+- Chat com histórico de conversas, separado por usuário e por conversa
+- Respostas da IA renderizadas em Markdown (listas, tabelas, títulos, negrito, etc.)
+- Múltiplos provedores de IA configuráveis pela interface:
+  - **Ollama** (modelos rodando localmente na máquina)
+  - **Gemini** (Google, via API Key)
+  - **Grok** (xAI, via API Key)
+- Teste de conexão do modelo configurado antes de usar
+- Indicação de qual modelo gerou cada resposta
+- Interface bloqueada com aviso quando nenhum modelo está configurado
 
+## Estrutura do projeto
 
-Minha proposta
+```
+Backend/
+  App/
+    database/
+      models/          # Usuario, Conversa, Mensagem, Documento, ConfiguracaoIA
+      database.py       # Engine, sessão e Base do SQLAlchemy
+    routers/            # Endpoints (chat, documentos, relatorios, configuracoes)
+    schemas/             # Schemas Pydantic (validação de entrada/saída)
+    services/
+      chatservice.py     # Regras de negócio de conversas e mensagens
+      ia_service.py       # Ponto de entrada para geração de resposta da IA
+      LLM/
+        base.py           # Interface LLMProvider
+        ollama_provider.py
+        gemini_provider.py
+        grok_provider.py
+        factory.py         # ProviderFactory - decide qual provider usar
+    config.py             # Variáveis de ambiente (DATABASE_URL, Supabase)
+    main.py               # Ponto de entrada da API
+  Docs/
+    infs.env              # Variáveis de ambiente (não versionado)
 
-Vamos desenvolver como uma empresa faria:
+Frontend/
+  src/
+    Components/
+      Chat/                # ChatWindow, ChatInput, ChatMessage
+      Layout/               # Sidebar, Header, Layout, RecentActivities
+    Pages/                  # Dashboard, Chat, Documentos, Relatorio, Settings
+    routes/                 # AppRoutes
+    Services/               # Cliente Axios (api.ts)
+    types/                   # Tipos TypeScript compartilhados
+```
 
-Sprint 1: Estrutura e interface  -- Foi
-    obs: hj existe dados mockados, principalmete ali no sidebar nas conersas recentes, dp que o backend tiver pronto vc pode deletar a pasta data e conectar aos dados reais
+## Arquitetura de IA
 
-Sprint 2: Backend (FastAPI) -- Foi
+A integração com modelos de linguagem segue o padrão **Strategy**, através da
+interface `LLMProvider`. Cada provedor (Ollama, Gemini, Grok) implementa essa
+interface, e a `ProviderFactory` decide qual instanciar com base na configuração
+salva pelo usuário no banco de dados. Isso permite trocar de modelo pela interface,
+sem precisar alterar código ou reiniciar o backend.
 
-Sprint 3: Banco de dados -- foi
+```
+Tela de Configurações (React)
+        ↓ usuário escolhe fornecedor + modelo (+ API Key, se necessário)
+        ↓
+PUT /configuracoes/ia
+        ↓
+Salva em ConfiguracaoIA (banco de dados)
+        ↓
+Próxima mensagem de chat → ProviderFactory lê a configuração salva
+        ↓
+Usa o provider correspondente para gerar a resposta
+```
 
-Sprint 4: Autenticação
-    principalmente em services e chat pq atualmente esta pegando os usuarios so do id 1 e precisa ser conforme logar, porem precisa do sistema para logar
-Sprint 5: IA (Ollama + RAG)
-Sprint 6: WhatsApp
-Sprint 7: Automações
-Sprint 8: Docker e Deploy
+## Como rodar
 
-Outras pendencias:
+### Backend
+```bash
+cd Backend/App
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
 
-VERIFICAR O GITIGNORE, PQ VC JA SUBIU NO GITHUB UMA VERSAO, DEPENDENDO VAI PRECISAR DELETAR E SUBIR DNV
+Crie o arquivo `Docs/infs.env` com:
+```
+DATABASE_URL=postgresql://usuario:senha@localhost:5432/nome_do_banco
+SUPABASE_URL=
+SUPABASE_KEY=
+```
 
-consolitar as variaveis com tipos no arquivo tipos
+### Frontend
+```bash
+cd Frontend
+npm install
+npm run dev
+```
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173"
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+### Modelos locais (Ollama)
+Para usar modelos locais, é necessário ter o [Ollama](https://ollama.com) instalado
+e baixar o modelo desejado antes de configurá-lo na aplicação:
+```bash
+ollama pull qwen3:8b
+ollama pull gemma4
+ollama pull llama3.3
+ollama pull deepseek-r1
+```
 
-dps verificar isso que colocou no seu main.py pq ele abre muitas portas de seguranca
+## Andamento do projeto
 
-verificar o chat.py em routers no backend pq ele so esta pegando usuarios com o id 1
+### Sprint 1 — Estrutura inicial
+- Setup do backend (FastAPI + PostgreSQL + SQLAlchemy)
+- Setup do frontend (React + Vite + Tailwind v4)
+- Models: Usuario, Conversa, Mensagem, Documento
+- CRUD de conversas e mensagens
+- Layout base: Sidebar, Header, rotas
 
-preciso colocar uma opcao de minimizar chats recentes e deletar chats
+### Sprint 2 — Chat funcional
+- Envio e listagem de mensagens em tempo real
+- Separação visual das mensagens (usuário x IA), estilo ChatGPT/Claude
+- Renderização de Markdown nas respostas (listas, tabelas, títulos, negrito)
+- Indicador "Pensando..." com animação
+- Auto-scroll e tela inicial de boas-vindas
+- Optimistic update ao enviar mensagem
 
-ta com um erro que se eu fazer uma peregunta em um chat vai aparecer em todos, pensando ...
+### Sprint 3 — Múltiplos provedores de IA
+- Arquitetura `LLMProvider` (Strategy pattern) para trocar de modelo sem alterar código
+- Providers implementados: Ollama (local), Gemini e Grok
+- Tela de Configurações com seleção de fornecedor e modelo
+- Persistência da configuração no banco de dados
+- Botão de teste de conexão
+- Exibição do modelo usado em cada resposta da IA
+- Bloqueio do chat quando nenhum modelo está configurado
 
-resolver a questao do pluguin e formatacao
+### Próximas sprints
+- [ ] Retornar mensagem do usuário + resposta da IA em uma única chamada (POST)
+- [ ] Autenticação de usuários (hoje o sistema usa um usuário fixo)
+- [ ] Upload e processamento de documentos
+- [ ] Geração de relatórios
+- [ ] Streaming de respostas da IA
+- [ ] Migrações de banco com Alembic
+- [ ] Lista de modelos Ollama dinâmica (via API do próprio Ollama)
 
+## Autor
 
-
-
-
-
-
-
-
-
-organizacao das tabelas banco:
-┌──────────────────────────────┐
-│          usuarios            │
-├──────────────────────────────┤
-│ id                           │
-│ nome                         │
-│ email                        │
-│ created_at                   │
-└───────────────┬──────────────┘
-                │ 1:N
-                │
-                ▼
-┌──────────────────────────────┐
-│         conversas            │
-├──────────────────────────────┤
-│ id                           │
-│ titulo                       │
-│ usuario_id                   │
-│ created_at                   │
-└───────────────┬──────────────┘
-                │ 1:N
-                │
-                ▼
-┌──────────────────────────────┐
-│         mensagens            │
-├──────────────────────────────┤
-│ id                           │
-│ conversa_id                  │
-│ usuario ("user"/"ai")        │
-│ texto                        │
-│ created_at                   │
-└──────────────────────────────┘
-
-
-┌──────────────────────────────┐
-│        documentos            │
-├──────────────────────────────┤
-│ id                           │
-│ nome                         │
-│ tipo                         │
-│ caminho_storage              │
-│ status                       │
-│ created_at                   │
-└──────────────────────────────┘
-
+Ruan

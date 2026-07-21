@@ -6,9 +6,10 @@ import remarkGfm from "remark-gfm";
 type MensagemChatPropriedades = {
     texto: string;
     usuario: "user" | "ai";
+    modelo?: string | null;
 };
 
-function MensagemChat({texto, usuario}: MensagemChatPropriedades) {
+function MensagemChat({texto, usuario, modelo}: MensagemChatPropriedades) {
 
     const isUser = usuario === "user";
 
@@ -98,6 +99,12 @@ function MensagemChat({texto, usuario}: MensagemChatPropriedades) {
                 [&_td]:py-2
             ">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>{texto}</ReactMarkdown>
+
+                {modelo && (
+                    <p className="text-xs text-slate-500 mt-2">
+                        {modelo}
+                    </p>
+                )}
             </div>
         </div>
     );
