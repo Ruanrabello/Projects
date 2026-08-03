@@ -1,0 +1,51 @@
+# Environment variables and credentials
+.env
+.env.*
+!.env.example
+!*.env.example
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local databases and runtime data
+*.db
+*.sqlite
+*.sqlite3
+*.log
+
+# Node.js
+node_modules/
+dist/
+dist-ssr/
+.vite/
+coverage/
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.suo
+*.swp
+
+# Temporary and personal files
+*.tmp
+*.bak
+andamento.txt
+key.env
+infs.env

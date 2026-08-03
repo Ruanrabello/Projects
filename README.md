@@ -1,62 +1,59 @@
-#  Projects
+# Projects
 
-Repositório dedicado aos meus estudos e projetos desenvolvidos em **Python, JavaScript, React, css, html  etc**.
-Aqui você encontrará diferentes implementações, testes e aplicações práticas que fazem parte do meu processo de aprendizado e evolução na programação.
+<p align="center">
+  <strong>Projetos práticos de Back-end, Dados, Inteligência Artificial e Automação</strong>
+</p>
 
-## 📚 Sobre o repositório
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-0B5CAD?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/FastAPI-00A896?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/React-6C63FF?style=for-the-badge&logo=react&logoColor=white" alt="React">
+  <img src="https://img.shields.io/badge/SQL-172B4D?style=for-the-badge&logo=postgresql&logoColor=white" alt="SQL">
+</p>
 
-Este repositório reúne projetos e exercícios desenvolvidos para praticar conceitos importantes da linguagem **Python**, como:
+Este repositório reúne aplicações, estudos e experimentos desenvolvidos para resolver problemas reais, praticar arquitetura de software e explorar diferentes tecnologias. Os projetos estão organizados por finalidade para facilitar a navegação.
 
-* Lógica de programação
-* Estruturas de controle
-* Manipulação de dados
-* Integração com APIs
-* Conexão com bancos de dados SQL
-* Automação de tarefas
+## Projetos em destaque
 
-O objetivo é consolidar conhecimentos e criar um portfólio prático de desenvolvimento.
+| Projeto | Área | Tecnologias | Status |
+|---|---|---|---|
+| [AI Business Assistant](./AI%20Business%20Assistant) | Back-end e IA | FastAPI, React, PostgreSQL, Ollama, Gemini e Grok | Em desenvolvimento |
+| [Assistente Pessoal](./Assistente-Pessoal-main) | IA e automação | Python, Groq e YouTube API | Protótipo funcional |
+| [Previsão do Tempo](./Previsao-Tempo) | API e Front-end | Python, HTML, CSS e JavaScript | Concluído |
+| [Machine Learning & IA](./MachineLearnind_IA_Projects) | Dados e IA | Python, Pandas e Scikit-learn | Laboratório de estudos |
+| [Calculadora de Cashback](./Calculadora_Cashback) | Back-end | Python e API REST | Concluído |
+| [Game Ball](./Game-BallBasic) | Desenvolvimento de jogos | Python e Pygame | Concluído |
 
-## 📂 Estrutura do projeto
+## Organização
 
-O repositório pode conter diferentes tipos de projetos, como:
+- **Back-end:** APIs REST, persistência de dados e regras de negócio.
+- **Dados e IA:** classificação, redes neurais, agentes e experimentos com modelos.
+- **Automação:** scripts e assistentes para reduzir tarefas repetitivas.
+- **Front-end:** interfaces web para consumo das aplicações.
+- **Games:** projetos para praticar lógica, eventos e orientação a objetos.
 
-* 🔹 **Projetos básicos** – exercícios e práticas de lógica
-* 🔹 **APIs** – testes e desenvolvimento de APIs
-* 🔹 **Integração com SQL** – projetos envolvendo banco de dados
-* 🔹 **Scripts de automação** – automação de tarefas com Python
+Cada pasta contém o código-fonte e, nos projetos principais, instruções próprias de instalação e execução.
 
-## 🚀 Tecnologias utilizadas
+## Como explorar
 
-* Python 3
-* SQL
-* JavaScript
-* TypeScript
-* React
-* ABAP
-* Frameworks
-* Html, css
-* APIs REST
+1. Escolha um projeto na tabela acima.
+2. Abra o README da pasta para entender objetivo e funcionalidades.
+3. Siga as instruções de instalação específicas.
+4. Use apenas arquivos `.env.example` como referência e mantenha credenciais no ambiente local.
 
+## Boas práticas do repositório
 
-## 🎯 Objetivo
+- Dependências geradas, ambientes virtuais e bancos locais não são versionados.
+- Credenciais e chaves de API devem ser fornecidas por variáveis de ambiente.
+- Projetos maiores e prontos para portfólio podem receber um repositório próprio.
+- Exercícios e experimentos continuam centralizados aqui para evitar repositórios vazios.
 
-Este repositório faz parte do meu processo de aprendizado em desenvolvimento e serve como um espaço para:
+## Autor
 
-* Praticar programação
-* Testar novas ideias
-* Criar projetos práticos
-* Evoluir minhas habilidades como desenvolvedor
+**Ruan Rabello** — estudante de Engenharia da Computação com foco em Back-end, Dados, IA, Automação e Cloud.
 
-## 👨‍💻 Autor
+[LinkedIn](https://www.linkedin.com/in/ruan-rabello-da-silva-9032b5274/) · [Portfólio](https://ruanportifolio.lovable.app) · [GitHub](https://github.com/Ruanrabello)
 
-**Ruan Rabello**
+## Licença
 
-* GitHub: https://github.com/
-* LinkedIn: https://www.linkedin.com/in/ruan-rabello-da-silva-9032b5274/
-
----
-
-⭐ Se quiser acompanhar minha evolução ou utilizar algum código como referência, fique à vontade para explorar o repositório!
-
-
-
+Distribuído sob a [licença MIT](./LICENSE).
