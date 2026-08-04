@@ -1,14 +1,16 @@
 # 🤖 IA e Automação
 
-Projetos que usam inteligência artificial, voz, integrações e execução automática de tarefas.
+Projetos que combinam inteligência artificial, voz, integrações e automação de tarefas.
 
 ## Projetos
 
-- [Assistente Pessoal](../Assistente-Pessoal-main) — assistente por voz com Groq, comandos locais, busca de vídeos e histórico.
+| Projeto | Descrição | Tecnologias | Status |
+|---|---|---|---|
+| [Assistente Pessoal](./Assistente-Pessoal) | Assistente por voz com respostas geradas por IA, comandos locais, busca de vídeos e histórico persistente | Python, Groq, SpeechRecognition e YouTube Data API | Protótipo funcional e revisado |
 
 ## Identidade visual
 
 - Cor principal: roxo `#7C3AED`
 - Cor de apoio: laranja `#EA580C`
 
-> A pasta será renomeada para `Assistente-Pessoal` durante a migração física.
+O projeto utiliza variáveis de ambiente para proteger as chaves de API e mantém o histórico pessoal fora do versionamento.
