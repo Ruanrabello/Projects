@@ -80,6 +80,20 @@ Projects/
 └── LICENSE
 ```
 
+## Padrão de documentação
+
+Cada projeto relevante possui:
+
+- banner exclusivo em SVG;
+- badges das tecnologias realmente utilizadas;
+- descrição objetiva e funcionalidades;
+- arquitetura e estrutura de pastas;
+- instruções de execução local;
+- roadmap, licença e autor;
+- links de retorno ao catálogo principal.
+
+As pastas `assets` guardam apenas banners, screenshots e outros recursos usados pela documentação. Elas permanecem versionadas porque removê-las quebraria as imagens dos READMEs.
+
 ## Padrão de nomes
 
 - Sem sufixos como `-main`, `Basic` ou `copy`.
@@ -93,6 +107,7 @@ Projects/
 - Chaves e credenciais são fornecidas por variáveis de ambiente.
 - Dados pessoais e históricos locais ficam fora do Git.
 - Cada projeto relevante possui descrição, tecnologias, status e instruções próprias.
+- Banners e recursos visuais ficam no `assets` do projeto correspondente.
 - Projetos grandes recebem um repositório dedicado.
 
 ## Progresso da organização
@@ -103,12 +118,14 @@ Projects/
 - [x] Substituir categorias de camada por categorias de soluções completas
 - [x] Migrar e renomear fisicamente todas as pastas
 - [x] Remover pastas antigas e duplicadas da raiz
+- [x] Padronizar os READMEs dos projetos
+- [x] Revisar links internos, banners e licença
 - [x] Revisar Assistente Pessoal
 - [x] Revisar Previsão do Tempo
 - [x] Revisar Calculadora de Cashback
 - [x] Revisar Machine Learning & IA
 - [x] Revisar Game Ball
-- [ ] Adicionar screenshots ou GIFs aos projetos com interface
+- [ ] Adicionar screenshots ou GIFs reais aos projetos com interface
 
 ## Autor
 
