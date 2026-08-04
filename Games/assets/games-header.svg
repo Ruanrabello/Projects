@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-labelledby="title desc">
+  <title id="title">Games</title>
+  <desc id="desc">Jogos, sistemas interativos e desenvolvimento com Pygame</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#22070F"/><stop offset="0.55" stop-color="#9F1239"/><stop offset="1" stop-color="#DC2626"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="82%" cy="42%" r="36%"><stop offset="0" stop-color="#F9A8D4" stop-opacity=".48"/><stop offset="1" stop-color="#F9A8D4" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1200" height="300" rx="24" fill="url(#bg)"/><rect width="1200" height="300" rx="24" fill="url(#glow)"/>
+  <g transform="translate(920 78)" fill="none" stroke="#FFE4E6" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" opacity=".82">
+    <path d="M24 116 50 36c7-22 30-34 52-25l26 11 26-11c22-9 45 3 52 25l26 80c6 18-13 34-29 23l-37-25H90l-37 25c-16 11-35-5-29-23Z"/>
+    <path d="M74 68v36M56 86h36M171 72h1M195 94h1"/>
+  </g>
+  <g font-family="Segoe UI,Arial,sans-serif">
+    <text x="70" y="82" fill="#FECDD3" font-size="23" font-weight="700" letter-spacing="4">GAMEPLAY • SISTEMAS • EXPERIÊNCIA</text>
+    <text x="70" y="160" fill="#FFFFFF" font-size="62" font-weight="800">GAMES</text>
+    <text x="70" y="215" fill="#FFE4E6" font-size="25">Jogos autorais, lógica interativa e arquitetura modular</text>
+    <text x="70" y="258" fill="#FBCFE8" font-size="18">PYTHON • PYGAME • PERSISTÊNCIA LOCAL</text>
+  </g>
+</svg>
