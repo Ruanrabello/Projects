@@ -1,46 +1,79 @@
-"""
-Áudio procedural — gera SFX e música sem arquivos externos.
-"""
+"""Áudio procedural para efeitos e trilha ambiente."""
+
 import array
+import logging
 import math
+
 import pygame
 
 from settings import MASTER_VOLUME, MUSIC_VOLUME, SFX_VOLUME
 
 
-def _make_tone(freq: float, duration: float, volume: float = 0.3,
-               sample_rate: int = 22050, wave: str = "sine") -> pygame.mixer.Sound:
-    n_samples = int(sample_rate * duration)
-    buf = array.array("h")
-    amp = int(32767 * volume)
-    for i in range(n_samples):
-        t = i / sample_rate
-        if wave == "sine":
-            v = math.sin(2 * math.pi * freq * t)
-        elif wave == "square":
-            v = 1.0 if math.sin(2 * math.pi * freq * t) > 0 else -1.0
+logger = logging.getLogger(__name__)
+SAMPLE_RATE = 22050
+
+
+def _clamp_volume(value: float) -> float:
+    return max(0.0, min(1.0, float(value)))
+
+
+def _make_tone(
+    frequency: float,
+    duration: float,
+    volume: float = 0.3,
+    sample_rate: int = SAMPLE_RATE,
+    wave: str = "sine",
+) -> pygame.mixer.Sound:
+    sample_count = max(1, int(sample_rate * duration))
+    buffer = array.array("h")
+    amplitude = int(32767 * _clamp_volume(volume))
+
+    for index in range(sample_count):
+        time = index / sample_rate
+
+        if wave == "square":
+            value = 1.0 if math.sin(2 * math.pi * frequency * time) >= 0 else -1.0
         elif wave == "saw":
-            v = 2 * (t * freq % 1) - 1
+            value = 2 * (time * frequency % 1) - 1
         else:
-            v = math.sin(2 * math.pi * freq * t * 2)
-        env = min(1.0, (n_samples - i) / (n_samples * 0.3))
-        buf.append(int(v * amp * env))
-    return pygame.mixer.Sound(buffer=buf)
+            value = math.sin(2 * math.pi * frequency * time)
+
+        remaining_ratio = (sample_count - index) / sample_count
+        envelope = min(1.0, remaining_ratio / 0.3)
+        buffer.append(int(value * amplitude * envelope))
+
+    return pygame.mixer.Sound(buffer=buffer)
 
 
 class AudioManager:
     def __init__(self):
-        self.master = MASTER_VOLUME
-        self.music_vol = MUSIC_VOLUME
-        self.sfx_vol = SFX_VOLUME
+        self.master = _clamp_volume(MASTER_VOLUME)
+        self.music_vol = _clamp_volume(MUSIC_VOLUME)
+        self.sfx_vol = _clamp_volume(SFX_VOLUME)
+        self.enabled = False
         self._sounds: dict[str, pygame.mixer.Sound] = {}
-        self._music_playing = False
+        self._music_channel: pygame.mixer.Channel | None = None
+        self._music_sound: pygame.mixer.Sound | None = None
 
-    def init(self):
-        pygame.mixer.init(frequency=22050, size=-16, channels=1, buffer=512)
-        self._build_sfx()
+    def init(self) -> bool:
+        """Inicializa o áudio sem impedir o jogo de abrir quando não há dispositivo."""
+        try:
+            if pygame.mixer.get_init() is None:
+                pygame.mixer.init(
+                    frequency=SAMPLE_RATE,
+                    size=-16,
+                    channels=1,
+                    buffer=512,
+                )
+            self._build_sfx()
+            self.enabled = True
+        except pygame.error:
+            logger.warning("Áudio indisponível. O jogo continuará sem som.", exc_info=True)
+            self.enabled = False
 
-    def _build_sfx(self):
+        return self.enabled
+
+    def _build_sfx(self) -> None:
         self._sounds = {
             "shoot": _make_tone(880, 0.06, 0.2, wave="square"),
             "hit": _make_tone(200, 0.1, 0.35, wave="saw"),
@@ -55,34 +88,41 @@ class AudioManager:
             "game_over": _make_tone(110, 0.5, 0.4),
         }
 
-    def play(self, name: str):
-        snd = self._sounds.get(name)
-        if snd:
-            snd.set_volume(self.sfx_vol * self.master)
-            snd.play()
-
-    def play_music(self):
-        if self._music_playing:
+    def play(self, name: str) -> None:
+        if not self.enabled:
             return
-        # Loop de tons baixos simulando ambiente
-        self._music_playing = True
-        pygame.mixer.music.set_volume(self.music_vol * self.master)
-        # Usa tom longo como drone de fundo
-        drone = _make_tone(55, 3.0, 0.08)
-        # pygame.mixer.music precisa de arquivo; usamos canal dedicado
-        ch = pygame.mixer.find_channel(True)
-        if ch:
-            drone.set_volume(self.music_vol * self.master * 0.5)
-            ch.play(drone, loops=-1)
 
-    def stop_music(self):
-        pygame.mixer.stop()
-        self._music_playing = False
+        sound = self._sounds.get(name)
+        if sound is None:
+            return
 
-    def set_volumes(self, master=None, music=None, sfx=None):
+        sound.set_volume(_clamp_volume(self.sfx_vol * self.master))
+        sound.play()
+
+    def play_music(self) -> None:
+        if not self.enabled or self._music_channel?.get_busy():
+            return
+
+        self._music_sound = _make_tone(55, 3.0, 0.08)
+        self._music_sound.set_volume(_clamp_volume(self.music_vol * self.master * 0.5))
+        self._music_channel = pygame.mixer.find_channel(True)
+
+        if self._music_channel is not None:
+            self._music_channel.play(self._music_sound, loops=-1)
+
+    def stop_music(self) -> None:
+        if self._music_channel is not None:
+            self._music_channel.stop()
+        self._music_channel = None
+        self._music_sound = None
+
+    def set_volumes(self, master=None, music=None, sfx=None) -> None:
         if master is not None:
-            self.master = master
+            self.master = _clamp_volume(master)
         if music is not None:
-            self.music_vol = music
+            self.music_vol = _clamp_volume(music)
         if sfx is not None:
-            self.sfx_vol = sfx
+            self.sfx_vol = _clamp_volume(sfx)
+
+        if self._music_sound is not None:
+            self._music_sound.set_volume(_clamp_volume(self.music_vol * self.master * 0.5))
