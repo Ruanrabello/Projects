@@ -20,30 +20,30 @@
 
 ## Visão geral
 
-O **Assistente Pessoal** foi desenvolvido para receber comandos por voz, responder com áudio, abrir sites e programas, consultar inteligência artificial e manter um histórico local das conversas.
+O **Assistente Pessoal** recebe comandos iniciados por uma palavra de ativação, responde por áudio, abre sites e programas, pesquisa vídeos, consulta a Groq e mantém um histórico local das conversas.
 
-A estrutura modular separa reconhecimento de voz, síntese de fala, comandos, integração com IA e persistência, facilitando a criação de novas automações sem concentrar toda a lógica no arquivo principal.
+A estrutura separa configuração, voz, comandos, IA e persistência. Integrações opcionais são inicializadas somente quando usadas, evitando que uma chave ausente ou um dispositivo indisponível impeça todo o programa de iniciar.
 
 ## Principais funcionalidades
 
 | Recurso | Descrição |
 |---|---|
-| Reconhecimento de voz | Captura comandos falados pelo microfone |
-| Síntese de fala | Converte respostas em áudio |
-| Comandos locais | Abre sites, programas e executa ações comuns |
-| Integração com IA | Gera respostas por meio da API da Groq |
-| Busca de vídeos | Consulta a YouTube Data API quando configurada |
-| Histórico | Mantém as conversas em JSON no ambiente local |
-| Tratamento de falhas | Evita que erros pontuais de microfone ou API encerrem o programa |
-| Segurança | Carrega chaves por variáveis de ambiente |
+| Palavra de ativação | Aceita wake words configuráveis no `.env` |
+| Reconhecimento de voz | Possui timeout e limite de duração da frase |
+| Síntese de fala | Inicialização tardia e fallback para texto no console |
+| Comandos locais | Abre navegador, YouTube, Google e calculadora no Windows |
+| Integração com IA | Usa modelo da Groq configurável por ambiente |
+| Busca de vídeos | Cria o cliente da YouTube API somente quando necessário |
+| Histórico | Valida mensagens e salva o JSON de forma atômica |
+| Tratamento de falhas | Erros de voz, áudio e serviços externos não encerram o loop principal |
 
-## Arquitetura do projeto
+## Arquitetura
 
 ```text
 Microfone
    │
    ▼
-Reconhecimento de voz
+Reconhecimento + wake word
    │
    ├── comando local ──► sistema operacional / navegador
    │
@@ -56,16 +56,18 @@ Reconhecimento de voz
                            └── síntese de fala
 ```
 
-## Estrutura de pastas
+## Estrutura
 
 ```text
 Assistente-Pessoal/
 ├── Config/
-│   └── configurações e variáveis do projeto
+│   └── keys.py
 ├── Core/
-│   └── voz, comandos, IA e histórico
+│   ├── comandos.py
+│   ├── historico.py
+│   ├── ia.py
+│   └── voz.py
 ├── data/
-│   └── dados locais gerados durante o uso
 ├── assets/
 │   └── assistant-header.svg
 ├── main.py
@@ -76,16 +78,9 @@ Assistente-Pessoal/
 
 ## Como executar localmente
 
-### 1. Clonar o catálogo
-
 ```bash
 git clone https://github.com/Ruanrabello/Projects.git
 cd Projects/IA-e-Automacao/Assistente-Pessoal
-```
-
-### 2. Criar o ambiente
-
-```bash
 python -m venv .venv
 ```
 
@@ -105,51 +100,47 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
-Configure as chaves necessárias no `.env`:
+Configure o `.env`:
 
 ```env
 GROQ_API_KEY=sua_chave_groq
+GROQ_MODEL=llama-3.1-8b-instant
 YOUTUBE_API_KEY=sua_chave_youtube_opcional
+WAKE_WORDS=jarvis,jarbas,jarvi
+VOICE_RATE=200
+VOICE_VOLUME=1.0
 ```
 
-### 3. Iniciar o assistente
+Inicie:
 
 ```bash
 python main.py
 ```
 
-## Requisitos de uso
-
-- Microfone funcional.
-- Saída de áudio configurada.
-- Chave válida da Groq.
-- Windows para os comandos locais atualmente implementados.
-
 ## Segurança e privacidade
 
-- O arquivo `.env` não deve ser versionado.
-- O histórico pessoal fica fora do Git.
-- As respostas e comandos locais devem ser revisados antes de ampliar permissões do sistema.
-- Chaves antigas que tenham aparecido em commits precisam ser substituídas no provedor correspondente.
+- O `.env` e o histórico local não são versionados.
+- Mensagens de falha da API não são gravadas como respostas da IA.
+- O cliente da YouTube API só é criado quando uma pesquisa é solicitada.
+- Comandos que controlam o sistema devem ser revisados antes de receber novas permissões.
 
 ## Limitações atuais
 
-- Alguns comandos dependem de caminhos e programas instalados no Windows.
+- Os comandos locais são mais completos no Windows.
+- O reconhecimento do Google requer conexão com a internet.
 - O histórico ainda não possui sincronização com banco ou nuvem.
-- O reconhecimento de voz depende da qualidade do microfone e do ambiente.
 - O projeto ainda não possui testes automatizados.
 
 ## Roadmap
 
-- [x] Implementar comandos de voz.
-- [x] Integrar respostas com IA.
-- [x] Adicionar síntese de fala e histórico local.
-- [x] Tratar falhas de microfone e API.
+- [x] Carregar configurações pelo `.env`.
+- [x] Implementar timeout de voz e fallback de áudio.
+- [x] Inicializar integrações opcionais sob demanda.
+- [x] Tornar a persistência do histórico mais segura.
 - [ ] Criar testes automatizados.
 - [ ] Tornar comandos independentes do sistema operacional.
 - [ ] Adicionar interface visual.
 - [ ] Organizar comandos como plugins.
-- [ ] Adicionar armazenamento opcional em banco de dados.
 
 ## Licença
 
