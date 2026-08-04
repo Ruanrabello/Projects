@@ -1,44 +1,59 @@
-import pandas as pd
+"""Classificação do dataset Iris com uma pipeline de regressão logística."""
+
 import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score
 from sklearn.datasets import load_iris
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, classification_report
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 
-# 1. Carregar os dados
-iris = load_iris()
-X = iris.data  # Características: tamanho da pétala, etc.
-y = iris.target # O que queremos prever: o tipo da flor
 
-# 2. Dividir Treino e Teste (20% para teste)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+RANDOM_STATE = 42
 
-# 3. Padronizar os dados (Opcional mas recomendado para Regressão Logística)
-scaler = StandardScaler()
-X_train = scaler.fit_transform(X_train)
-X_test = scaler.transform(X_test)
 
-# 4. Criar o modelo
-# Usamos LogisticRegression para CLASSIFICAR as flores
-modelo = LogisticRegression()
+def criar_modelo() -> Pipeline:
+    return Pipeline(
+        steps=[
+            ("scaler", StandardScaler()),
+            (
+                "classifier",
+                LogisticRegression(max_iter=500, random_state=RANDOM_STATE),
+            ),
+        ]
+    )
 
-# 5. Treinar o modelo
-modelo.fit(X_train, y_train)
 
-# 6. Fazer previsões com os dados de teste
-previsoes = modelo.predict(X_test)
+def main() -> None:
+    iris = load_iris()
+    features_train, features_test, target_train, target_test = train_test_split(
+        iris.data,
+        iris.target,
+        test_size=0.2,
+        random_state=RANDOM_STATE,
+        stratify=iris.target,
+    )
 
-# 7. Ver o quão bom o modelo foi
-acuracia = accuracy_score(y_test, previsoes)
-print(f"Acurácia do Modelo: {acuracia * 100:.2f}%")
+    model = criar_modelo()
+    model.fit(features_train, target_train)
 
-# --- TESTE COM DADOS NOVOS ---
-# Digamos que achamos uma flor com essas medidas:
-nova_flor = np.array([[5.1, 3.5, 1.4, 0.2]])
-nova_flor_escaneada = scaler.transform(nova_flor) # Não esqueça de padronizar!
+    predictions = model.predict(features_test)
+    accuracy = accuracy_score(target_test, predictions)
 
-resultado = modelo.predict(nova_flor_escaneada)
-nome_da_flor = iris.target_names[resultado]
+    print(f"Acurácia: {accuracy:.2%}")
+    print(
+        classification_report(
+            target_test,
+            predictions,
+            target_names=iris.target_names,
+            zero_division=0,
+        )
+    )
 
-print(f"A flor que encontramos é uma: {nome_da_flor}")
+    new_flower = np.array([[5.1, 3.5, 1.4, 0.2]])
+    predicted_class = int(model.predict(new_flower)[0])
+    print(f"Nova amostra: {iris.target_names[predicted_class]}")
+
+
+if __name__ == "__main__":
+    main()
