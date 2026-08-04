@@ -1,4 +1,4 @@
-# 📊 Dados e Machine Learning
+# 📊 Machine Learning
 
 Estudos e experimentos com preparação de dados, classificação, redes neurais e modelos de aprendizado de máquina.
 

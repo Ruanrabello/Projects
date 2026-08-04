@@ -9,7 +9,7 @@
 <p align="center">
   <a href="./Aplicacoes-Web"><img src="https://img.shields.io/badge/Aplicações%20Web-2563EB?style=for-the-badge" alt="Aplicações Web"></a>
   <a href="./IA-e-Automacao"><img src="https://img.shields.io/badge/IA%20e%20Automação-7C3AED?style=for-the-badge" alt="IA e Automação"></a>
-  <a href="./Dados-e-Machine-Learning"><img src="https://img.shields.io/badge/Dados%20e%20ML-16A34A?style=for-the-badge" alt="Dados e Machine Learning"></a>
+  <a href="./Machine-Learning"><img src="https://img.shields.io/badge/Machine%20Learning-16A34A?style=for-the-badge" alt="Machine Learning"></a>
   <a href="./Games"><img src="https://img.shields.io/badge/Games-DC2626?style=for-the-badge" alt="Games"></a>
 </p>
 
@@ -32,7 +32,7 @@ Projetos grandes e independentes permanecem em repositórios próprios.
 |---|---|---|---|
 | 🌐 Aplicações Web | Azul e ciano | Previsão do Tempo, Calculadora de Cashback | [Abrir](./Aplicacoes-Web) |
 | 🤖 IA e Automação | Roxo e laranja | Assistente Pessoal | [Abrir](./IA-e-Automacao) |
-| 📊 Dados e Machine Learning | Verde e roxo | Machine Learning & IA | [Abrir](./Dados-e-Machine-Learning) |
+| 📊 Machine Learning | Verde e roxo | Machine Learning & IA | [Abrir](./Machine-Learning) |
 | 🎮 Games | Vermelho e rosa neon | Neon Depths — Game Ball | [Abrir](./Games) |
 
 ## Catálogo interno
@@ -50,11 +50,11 @@ Projetos grandes e independentes permanecem em repositórios próprios.
 |---|---|---|---|
 | [Assistente Pessoal](./IA-e-Automacao/Assistente-Pessoal) | Assistente por voz que executa comandos locais, consulta IA, pesquisa vídeos e mantém histórico | Python, Groq, SpeechRecognition e YouTube Data API | Protótipo funcional e revisado |
 
-### 📊 Dados e Machine Learning
+### 📊 Machine Learning
 
 | Projeto | Descrição | Tecnologias | Status |
 |---|---|---|---|
-| [Machine Learning & IA](./Dados-e-Machine-Learning/Machine-Learning-IA) | Laboratório com agentes locais, classificação, redes neurais e comparação entre modelos | Python, Pandas, NumPy, Scikit-learn, TensorFlow, LangChain e Ollama | Estudos aplicados |
+| [Machine Learning & IA](./Machine-Learning/Machine-Learning-IA) | Laboratório com agentes locais, classificação, redes neurais e comparação entre modelos | Python, Pandas, NumPy, Scikit-learn, TensorFlow, LangChain e Ollama | Estudos aplicados |
 
 ### 🎮 Games
 
@@ -71,7 +71,7 @@ Projects/
 │   └── Calculadora-Cashback/
 ├── IA-e-Automacao/
 │   └── Assistente-Pessoal/
-├── Dados-e-Machine-Learning/
+├── Machine-Learning/
 │   └── Machine-Learning-IA/
 ├── Games/
 │   └── Game-Ball/
@@ -102,6 +102,7 @@ Projects/
 - [x] Criar identidade visual e descrições
 - [x] Substituir categorias de camada por categorias de soluções completas
 - [x] Migrar e renomear fisicamente todas as pastas
+- [x] Remover pastas antigas e duplicadas da raiz
 - [x] Revisar Assistente Pessoal
 - [x] Revisar Previsão do Tempo
 - [x] Revisar Calculadora de Cashback
