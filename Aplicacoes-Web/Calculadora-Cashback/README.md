@@ -26,6 +26,10 @@ O projeto demonstra regras de negócio, validação de dados, integração entre
 
 ## Demonstração
 
+<p align="center">
+  <img src="./assets/cashback-interface.png" width="82%" alt="Interface da Calculadora de Cashback">
+</p>
+
 - [Abrir aplicação web](https://calculadora-cashback-w34p.vercel.app)
 - [Abrir documentação Swagger da API](https://calculadora-cashback-csom.onrender.com/docs)
 
@@ -69,7 +73,8 @@ PostgreSQL
 ```text
 Calculadora-Cashback/
 ├── assets/
-│   └── cashback-header.svg
+│   ├── cashback-header.svg
+│   └── cashback-interface.png
 ├── main.py
 ├── index.html
 ├── requirements.txt
@@ -144,10 +149,10 @@ Acesse `http://localhost:3000`. Para usar a API local, altere temporariamente `A
 - [x] Adicionar cupons e histórico.
 - [x] Proteger a conexão do banco com variável de ambiente.
 - [x] Adicionar validações e tratamento de falhas.
+- [x] Adicionar screenshot da aplicação.
 - [ ] Separar HTML, CSS e JavaScript em arquivos próprios.
 - [ ] Permitir configuração automática da URL da API.
 - [ ] Adicionar testes unitários para as regras de negócio.
-- [ ] Adicionar screenshot ou GIF da aplicação.
 
 ## Licença
 
