@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-labelledby="title desc">
+  <title id="title">Previsão do Tempo</title>
+  <desc id="desc">Aplicação full stack para consulta meteorológica</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#082f49"/>
+      <stop offset="0.55" stop-color="#0e7490"/>
+      <stop offset="1" stop-color="#2563eb"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="78%" cy="28%" r="38%">
+      <stop offset="0" stop-color="#fde68a" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#fde68a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="300" rx="24" fill="url(#bg)"/>
+  <rect width="1200" height="300" rx="24" fill="url(#sun)"/>
+  <g opacity="0.18" fill="none" stroke="#e0f2fe" stroke-width="3">
+    <path d="M880 210c18-44 76-56 112-24 35-57 127-31 129 35H880Z"/>
+    <path d="M930 96v-34M895 109l-24-24M965 109l24-24"/>
+  </g>
+  <g font-family="Segoe UI, Arial, sans-serif">
+    <text x="74" y="86" fill="#a5f3fc" font-size="24" font-weight="700" letter-spacing="4">FASTAPI • JAVASCRIPT • OPENWEATHER</text>
+    <text x="74" y="160" fill="#ffffff" font-size="58" font-weight="800">PREVISÃO DO TEMPO</text>
+    <text x="74" y="216" fill="#dbeafe" font-size="25">Consulta meteorológica em tempo real com interface responsiva</text>
+    <text x="74" y="258" fill="#bae6fd" font-size="18">BACK-END • API REST • FRONT-END</text>
+  </g>
+</svg>
