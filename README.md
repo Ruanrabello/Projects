@@ -125,7 +125,9 @@ As pastas `assets` guardam apenas banners, screenshots e outros recursos usados 
 - [x] Revisar Calculadora de Cashback
 - [x] Revisar Machine Learning & IA
 - [x] Revisar Game Ball
-- [ ] Adicionar screenshots ou GIFs reais aos projetos com interface
+- [x] Adicionar screenshot real à Calculadora de Cashback
+- [ ] Adicionar screenshot ou GIF real ao Previsão do Tempo
+- [ ] Adicionar screenshot ou GIF real ao Neon Depths
 
 ## Autor
 
