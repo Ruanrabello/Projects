@@ -6,9 +6,6 @@
 *.pem
 *.key
 
-# Project moved to its own repository
-/AI Business Assistant/
-
 # Python
 __pycache__/
 *.py[cod]
@@ -20,11 +17,15 @@ env/
 .mypy_cache/
 .ruff_cache/
 
-# Local databases and runtime data
+# Local databases, logs and runtime data
 *.db
 *.sqlite
 *.sqlite3
 *.log
+IA-e-Automacao/Assistente-Pessoal/data/*.json
+!IA-e-Automacao/Assistente-Pessoal/data/.gitkeep
+Games/Game-Ball/saves/*.json
+!Games/Game-Ball/saves/.gitkeep
 
 # Node.js
 node_modules/
