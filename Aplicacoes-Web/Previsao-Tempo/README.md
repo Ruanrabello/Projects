@@ -45,14 +45,15 @@ FastAPI
 OpenWeatherMap
 ```
 
-## Estrutura atual
+## Estrutura
 
 ```text
 Previsao-Tempo/
 ├── Backend/
 │   ├── main.py
-│   └── requirements.txt
-├── Frontend copy/
+│   ├── requirements.txt
+│   └── .env.example
+├── Frontend/
 │   ├── img/
 │   ├── index.html
 │   ├── script.js
@@ -61,10 +62,8 @@ Previsao-Tempo/
 ├── assets/
 │   └── weather-header.svg
 ├── .gitignore
-└── Readme.md
+└── README.md
 ```
-
-> A pasta `Frontend copy` será renomeada para `Frontend` durante a migração física para a categoria `Frontend/Previsao-Tempo`.
 
 ## Como executar
 
@@ -79,21 +78,17 @@ No Windows:
 
 ```bash
 .venv\Scripts\activate
-```
-
-Instale as dependências:
-
-```bash
 pip install -r requirements.txt
+copy .env.example .env
 ```
 
-Crie `Backend/.env`:
+Preencha a chave da OpenWeather no arquivo `.env`:
 
 ```env
 API_KEY=sua_chave_openweather
 ```
 
-Inicie corretamente o Uvicorn:
+Inicie o Uvicorn:
 
 ```bash
 uvicorn main:app --host 127.0.0.1 --port 8000 --reload
@@ -108,7 +103,7 @@ http://127.0.0.1:8000/docs
 ### 2. Front-end
 
 ```bash
-cd "Frontend copy"
+cd Frontend
 python -m http.server 3000
 ```
 
@@ -125,21 +120,6 @@ http://localhost:3000
 | GET | `/weather/{city}` | Retorna as condições atuais da cidade |
 | GET | `/health` | Verifica a API e informa se a chave está configurada |
 
-Exemplo de resposta:
-
-```json
-{
-  "Cidade": "Rio de Janeiro",
-  "País": "BR",
-  "Temperatura": 27.4,
-  "Descrição": "céu limpo",
-  "Umidade": 68,
-  "Sensação Térmica": 29.1,
-  "Velocidade do Vento": 3.6,
-  "Pressão": 1013
-}
-```
-
 ## Segurança e confiabilidade
 
 - A chave da OpenWeather fica fora do código, em variável de ambiente.
@@ -153,7 +133,6 @@ Exemplo de resposta:
 
 - Exibe somente as condições atuais.
 - O endereço da API usa `localhost` por padrão.
-- O botão “Ver Tudo” utiliza uma visualização simples do navegador.
 - Ainda não há testes automatizados.
 
 ## Roadmap
@@ -162,8 +141,8 @@ Exemplo de resposta:
 - [x] Validar ausência ou rejeição da API key.
 - [x] Implementar timeout real no front-end.
 - [x] Corrigir o botão “Ver Tudo”.
-- [ ] Renomear `Frontend copy` para `Frontend`.
-- [ ] Mover para `Frontend/Previsao-Tempo` no catálogo.
+- [x] Renomear `Frontend copy` para `Frontend`.
+- [x] Mover para `Aplicacoes-Web/Previsao-Tempo`.
 - [ ] Adicionar previsão de cinco dias.
 - [ ] Adicionar geolocalização.
 - [ ] Criar testes automatizados.
