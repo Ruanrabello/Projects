@@ -1,47 +1,49 @@
 import json
-import os
 from pathlib import Path
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 CAMINHO_HISTORICO = BASE_DIR / "data" / "Historico.json"
+LIMITE_MENSAGENS = 50
 
 
-def limpar_texto(texto):
-    caracteres_validos = "abcdefghijklmnopqrstuvwxyzáéíóúâêôãõç 0123456789"
-    texto_limpo = "".join(c for c in texto.lower() if c in caracteres_validos)
-    return texto_limpo.strip()
+def carregar_historico() -> list[dict]:
+    if not CAMINHO_HISTORICO.exists():
+        return []
+
+    try:
+        with CAMINHO_HISTORICO.open("r", encoding="utf-8") as arquivo:
+            dados = json.load(arquivo)
+    except (json.JSONDecodeError, OSError):
+        return []
+
+    return dados if isinstance(dados, list) else []
 
 
-def carregar_historico():
-    if os.path.exists(CAMINHO_HISTORICO):
-        try:
-            with open(CAMINHO_HISTORICO, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except json.JSONDecodeError:
-            return []
-    return []
-
-
-def salvar_historico(historico):
+def salvar_historico(historico: list[dict]) -> None:
     CAMINHO_HISTORICO.parent.mkdir(parents=True, exist_ok=True)
-    with open(CAMINHO_HISTORICO, "w", encoding="utf-8") as f:
-        json.dump(historico, f, ensure_ascii=False, indent=2)
+
+    with CAMINHO_HISTORICO.open("w", encoding="utf-8") as arquivo:
+        json.dump(historico, arquivo, ensure_ascii=False, indent=2)
 
 
-def adicionar_mensagem(historico, role, content):
-    # 🔹 Limpa texto ANTES de salvar para evitar *, #, etc.
-    content_limpo = limpar_texto(content)
+def adicionar_mensagem(historico: list[dict], role: str, content: str) -> list[dict]:
+    conteudo = content.strip()
 
-    historico.append({"role": role, "content": content_limpo})
+    if not conteudo:
+        return historico
 
-    # 🔹 Mantém no máximo 50 mensagens
-    if len(historico) > 50:
-        historico.pop(0)
+    historico.append({"role": role, "content": conteudo})
+
+    if len(historico) > LIMITE_MENSAGENS:
+        del historico[:-LIMITE_MENSAGENS]
 
     salvar_historico(historico)
     return historico
 
 
-def limpar_historico():
-    if os.path.exists(CAMINHO_HISTORICO):
-        os.remove(CAMINHO_HISTORICO)
+def limpar_historico() -> None:
+    try:
+        CAMINHO_HISTORICO.unlink(missing_ok=True)
+    except OSError as erro:
+        raise RuntimeError(f"Não foi possível limpar o histórico: {erro}") from erro
