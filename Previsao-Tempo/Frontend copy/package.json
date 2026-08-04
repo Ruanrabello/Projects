@@ -1,13 +1,18 @@
 {
   "name": "previsao-tempo",
   "version": "1.0.0",
-  "description": "Aplicação web para consultar previsões meteorológicas",
-  "main": "index.html",
+  "private": true,
+  "description": "Aplicação full stack para consultar condições meteorológicas em tempo real.",
   "scripts": {
     "dev": "python -m http.server 3000"
   },
-  "keywords": ["weather", "previsão", "tempo"],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {}
+  "keywords": [
+    "weather",
+    "previsao-do-tempo",
+    "fastapi",
+    "javascript",
+    "openweathermap"
+  ],
+  "author": "Ruan Rabello",
+  "license": "MIT"
 }
