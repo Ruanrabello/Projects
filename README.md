@@ -1,92 +1,78 @@
 <p align="center">
-  <img src="./assets/projects-header.svg" width="100%" alt="Projects — catálogo de Back-end, Dados, IA e Automação">
+  <img src="./assets/projects-header.svg" width="100%" alt="Projects — catálogo de aplicações, IA, dados e games">
 </p>
 
 <p align="center">
-  <strong>Catálogo de projetos práticos, protótipos e estudos aplicados de desenvolvimento.</strong>
+  <strong>Catálogo de projetos completos, protótipos funcionais e estudos aplicados.</strong>
 </p>
 
 <p align="center">
-  <a href="./AI"><img src="https://img.shields.io/badge/IA-7C3AED?style=for-the-badge" alt="Inteligência Artificial"></a>
-  <a href="./Backend"><img src="https://img.shields.io/badge/Back--end-2563EB?style=for-the-badge" alt="Back-end"></a>
-  <a href="./Frontend"><img src="https://img.shields.io/badge/Front--end-0891B2?style=for-the-badge" alt="Front-end"></a>
-  <img src="https://img.shields.io/badge/Dados-16A34A?style=for-the-badge" alt="Dados">
-  <img src="https://img.shields.io/badge/Automação-EA580C?style=for-the-badge" alt="Automação">
+  <a href="./Aplicacoes-Web"><img src="https://img.shields.io/badge/Aplicações%20Web-2563EB?style=for-the-badge" alt="Aplicações Web"></a>
+  <a href="./IA-e-Automacao"><img src="https://img.shields.io/badge/IA%20e%20Automação-7C3AED?style=for-the-badge" alt="IA e Automação"></a>
+  <a href="./Dados-e-Machine-Learning"><img src="https://img.shields.io/badge/Dados%20e%20ML-16A34A?style=for-the-badge" alt="Dados e Machine Learning"></a>
   <a href="./Games"><img src="https://img.shields.io/badge/Games-DC2626?style=for-the-badge" alt="Games"></a>
 </p>
 
 ## Sobre o repositório
 
-O **Projects** reúne aplicações menores, laboratórios, protótipos funcionais e estudos utilizados para praticar arquitetura de software, APIs, inteligência artificial, dados, automação e interfaces.
+O **Projects** reúne projetos menores e médios em um único catálogo profissional. A organização é feita pelo **tipo de solução**, e não por camadas como front-end e back-end, porque uma mesma aplicação pode conter interface, API, banco de dados e integrações.
 
-Projetos grandes e com identidade própria são mantidos em repositórios dedicados. Este repositório funciona como um catálogo central, evitando vários repositórios pequenos e sem contexto.
+Projetos grandes e independentes permanecem em repositórios próprios.
 
 ## Projetos principais
 
 | Projeto | Descrição | Tecnologias | Status |
 |---|---|---|---|
 | [Enterprise AI Assistant](https://github.com/Ruanrabello/enterprise-ai-assistant) | Plataforma full stack de IA corporativa com histórico, configuração de modelos e base para RAG | FastAPI, React, PostgreSQL, Ollama, Gemini e Grok | Projeto principal |
-| [Excel VBA Projects](https://github.com/Ruanrabello/Excel-vba-projects) | Coleção de automações para relatórios, tratamento de dados, PDFs e integração com Outlook | Excel e VBA | Repositório dedicado |
+| [Excel VBA Projects](https://github.com/Ruanrabello/Excel-vba-projects) | Automações para relatórios, tratamento de dados, PDFs e integração com Outlook | Excel e VBA | Repositório dedicado |
 
 ## Navegação por categorias
 
 | Categoria | Cor | Projetos | Acesso |
-|---|---:|---:|---|
-| 🤖 Inteligência Artificial | `#7C3AED` | Assistente Pessoal, Machine Learning & IA | [Abrir categoria](./AI) |
-| 🌐 Back-end e APIs | `#2563EB` | Calculadora de Cashback | [Abrir categoria](./Backend) |
-| 💻 Front-end | `#0891B2` | Previsão do Tempo | [Abrir categoria](./Frontend) |
-| 🎮 Games | `#DC2626` | Game Ball | [Abrir categoria](./Games) |
+|---|---:|---|---|
+| 🌐 Aplicações Web | Azul/ciano | Previsão do Tempo, Calculadora de Cashback | [Abrir](./Aplicacoes-Web) |
+| 🤖 IA e Automação | Roxo/laranja | Assistente Pessoal | [Abrir](./IA-e-Automacao) |
+| 📊 Dados e Machine Learning | Verde/roxo | Machine Learning & IA | [Abrir](./Dados-e-Machine-Learning) |
+| 🎮 Games | Vermelho | Game Ball | [Abrir](./Games) |
 
 ## Catálogo interno
 
-### 🤖 Inteligência Artificial
+### 🌐 Aplicações Web
 
 | Projeto | Descrição | Tecnologias | Status |
 |---|---|---|---|
-| [Assistente Pessoal](./Assistente-Pessoal-main) | Assistente por voz capaz de executar comandos locais, consultar IA, buscar vídeos e manter histórico | Python, Groq, voz e YouTube API | Protótipo funcional |
-| [Machine Learning & IA](./MachineLearnind_IA_Projects) | Laboratório de classificação, análise de dados e experimentos com modelos de aprendizado de máquina | Python, Pandas e Scikit-learn | Estudos aplicados |
+| [Previsão do Tempo](./Previsao-Tempo) | Aplicação full stack para consultar dados meteorológicos, com interface responsiva e API própria | FastAPI, HTML, CSS, JavaScript e OpenWeatherMap | Funcional e revisado |
+| [Calculadora de Cashback](./Calculadora_Cashback) | Aplicação web para cálculo de cashback com regras de negócio expostas por API | Python, API REST e HTML | Concluído |
 
-### 🌐 Back-end e APIs
-
-| Projeto | Descrição | Tecnologias | Status |
-|---|---|---|---|
-| [Calculadora de Cashback](./Calculadora_Cashback) | Aplicação para calcular cashback e praticar regras de negócio expostas por API | Python e API REST | Concluído |
-
-### 💻 Front-end
+### 🤖 IA e Automação
 
 | Projeto | Descrição | Tecnologias | Status |
 |---|---|---|---|
-| [Previsão do Tempo](./Previsao-Tempo) | Interface web para consultar e exibir informações meteorológicas consumindo uma API externa | HTML, CSS e JavaScript | Concluído |
+| [Assistente Pessoal](./Assistente-Pessoal-main) | Assistente por voz que executa comandos locais, consulta IA, pesquisa vídeos e mantém histórico | Python, Groq, reconhecimento de voz e YouTube API | Protótipo funcional e revisado |
 
-### 📊 Dados
-
-| Projeto | Descrição | Tecnologias | Status |
-|---|---|---|---|
-| [Machine Learning & IA](./MachineLearnind_IA_Projects) | Notebooks e scripts para preparação de dados e modelos de classificação | Python, Pandas e Scikit-learn | Laboratório |
-
-### ⚙️ Automação
+### 📊 Dados e Machine Learning
 
 | Projeto | Descrição | Tecnologias | Status |
 |---|---|---|---|
-| [Assistente Pessoal](./Assistente-Pessoal-main) | Automatiza comandos locais e interações por voz com apoio de IA | Python e APIs | Protótipo funcional |
+| [Machine Learning & IA](./MachineLearnind_IA_Projects) | Laboratório de preparação de dados, classificação e comparação de modelos | Python, Pandas e Scikit-learn | Estudos aplicados |
 
 ### 🎮 Games
 
 | Projeto | Descrição | Tecnologias | Status |
 |---|---|---|---|
-| [Game Ball](./Game-BallBasic) | Jogo simples criado para praticar eventos, colisões e lógica de atualização em tempo real | Python e Pygame | Concluído |
+| [Game Ball](./Game-BallBasic) | Jogo criado para praticar eventos, colisões, movimentação, efeitos e sistemas de salvamento | Python e Pygame | Concluído |
 
-## Estrutura planejada
+## Estrutura final
 
 ```text
 Projects/
-├── AI/
-│   ├── Assistente-Pessoal/
-│   └── Machine-Learning/
-├── Backend/
+├── Aplicacoes-Web/
+│   ├── Previsao-Tempo/
 │   └── Calculadora-Cashback/
-├── Frontend/
-│   └── Previsao-Tempo/
+├── IA-e-Automacao/
+│   └── Assistente-Pessoal/
+├── Dados-e-Machine-Learning/
+│   └── Machine-Learning-IA/
 ├── Games/
 │   └── Game-Ball/
 ├── assets/
@@ -94,25 +80,32 @@ Projects/
 └── LICENSE
 ```
 
-As categorias já existem e funcionam como índice. A migração física dos projetos será feita de forma gradual para preservar todos os arquivos e evitar perda de conteúdo.
+## Padrão de nomes
+
+- Sem sufixos como `-main`, `Basic` ou `copy`.
+- Palavras separadas por hífen.
+- Nomes curtos, descritivos e consistentes.
+- Pastas de projeto representam soluções completas, não apenas uma camada técnica.
 
 ## Boas práticas aplicadas
 
-- Dependências geradas, ambientes virtuais, caches, builds e bancos locais não são versionados.
-- Credenciais e chaves devem ser fornecidas por variáveis de ambiente.
-- Projetos maiores recebem um repositório próprio e permanecem referenciados neste catálogo.
-- Cada projeto relevante deve possuir descrição, tecnologias, estado atual e instruções próprias.
+- Dependências, ambientes virtuais, caches, builds e bancos locais não são versionados.
+- Chaves e credenciais devem ser fornecidas por variáveis de ambiente.
+- Cada projeto relevante possui descrição, tecnologias, status e instruções próprias.
+- Projetos grandes recebem um repositório dedicado.
 
 ## Próximas melhorias
 
-- [x] Remover dependências e arquivos gerados do repositório
-- [x] Separar o Enterprise AI Assistant em um repositório dedicado
-- [x] Criar identidade visual para o catálogo
-- [x] Adicionar descrições aos projetos listados
-- [x] Criar pastas de categorias e navegação por área
-- [ ] Migrar fisicamente cada projeto para sua categoria
-- [ ] Revisar o código dos projetos e corrigir erros claros de execução
-- [ ] Criar ou atualizar READMEs internos restantes
+- [x] Remover arquivos gerados e dependências versionadas
+- [x] Separar o Enterprise AI Assistant
+- [x] Criar identidade visual e descrições
+- [x] Substituir categorias `Backend` e `Frontend` por categorias de projetos completos
+- [x] Revisar Assistente Pessoal
+- [x] Revisar Previsão do Tempo
+- [ ] Migrar fisicamente e renomear todas as pastas
+- [ ] Revisar Calculadora de Cashback
+- [ ] Revisar Machine Learning & IA
+- [ ] Revisar Game Ball
 - [ ] Adicionar screenshots aos projetos com interface
 
 ## Autor
