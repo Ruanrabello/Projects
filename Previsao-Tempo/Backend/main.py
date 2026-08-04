@@ -1,56 +1,95 @@
+import logging
 import os
 import re
-import logging
+
 import requests
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-
-app = FastAPI(title="API de Previsão do Tempo", version="1.0.0")
-
 load_dotenv()
-API_KEY = os.getenv("API_KEY")
+
+API_KEY = os.getenv("API_KEY", "").strip()
+OPENWEATHER_URL = "https://api.openweathermap.org/data/2.5/weather"
+REQUEST_TIMEOUT_SECONDS = 10
 
 logger = logging.getLogger("weather_api")
-logger.setLevel(logging.INFO)
+logging.basicConfig(level=logging.INFO)
+
+app = FastAPI(title="API de Previsão do Tempo", version="1.1.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=".*",
-    allow_methods=["*"],
-    allow_headers=["*"]
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:5500",
+        "http://127.0.0.1:5500",
+    ],
+    allow_credentials=False,
+    allow_methods=["GET"],
+    allow_headers=["*"],
 )
 
 
-def validate_city(city: str) -> bool:
-    if not city or len(city) < 2 or len(city) > 50:             # Verifica se a cidade é nula ou tem um comprimento inválido
-        return False
+def validate_city(city: str) -> str:
+    normalized_city = city.strip()
 
-    if not re.match(r"^[a-zA-ZÀ-ÿ\s\-]+$", city):               # Permite apenas letras, hífens e espaços
-        return False
+    if len(normalized_city) < 2 or len(normalized_city) > 50:
+        raise HTTPException(
+            status_code=400,
+            detail="O nome da cidade deve ter entre 2 e 50 caracteres.",
+        )
 
-    return True
+    if not re.fullmatch(r"[a-zA-ZÀ-ÿ\s\-']+", normalized_city):
+        raise HTTPException(
+            status_code=400,
+            detail="Use apenas letras, espaços, hífens e apóstrofos.",
+        )
+
+    return normalized_city
 
 
-def get_weather(city: str):
+def ensure_api_key() -> None:
+    if not API_KEY:
+        logger.error("A variável de ambiente API_KEY não foi configurada.")
+        raise HTTPException(
+            status_code=503,
+            detail="O serviço de clima não está configurado.",
+        )
 
-    if not validate_city(city):
-        logger.warning(f"Nome de cidade inválido: {city}")                              # Registra um aviso no log sobre o nome da cidade inválido → Para você (desenvolvedor)
-        raise HTTPException(status_code=400, detail="Nome de cidade inválido")          # Retorna um erro HTTP 400 com a mensagem → Para o usuário/cliente da API
 
-    try:                                                        # Tente executar este código. Se ocorrer algum erro, vá para um dos blocos except
-        url = "https://api.openweathermap.org/data/2.5/weather"
-        parameters = {
-            "q": city,
-            "appid": API_KEY,
-            "units": "metric",
-            "lang": "pt_br"
-        }
+def get_weather(city: str) -> dict:
+    ensure_api_key()
+    normalized_city = validate_city(city)
 
-        response = requests.get(url, params=parameters, timeout=10)
-        response.raise_for_status()                                                                     # Verifica se a resposta foi bem-sucedida (status code 200-299)
+    parameters = {
+        "q": normalized_city,
+        "appid": API_KEY,
+        "units": "metric",
+        "lang": "pt_br",
+    }
+
+    try:
+        response = requests.get(
+            OPENWEATHER_URL,
+            params=parameters,
+            timeout=REQUEST_TIMEOUT_SECONDS,
+        )
+
+        if response.status_code == 404:
+            raise HTTPException(status_code=404, detail="Cidade não encontrada.")
+
+        if response.status_code in {401, 403}:
+            logger.error("A OpenWeatherMap rejeitou a chave configurada.")
+            raise HTTPException(
+                status_code=503,
+                detail="O serviço de clima está temporariamente indisponível.",
+            )
+
+        response.raise_for_status()
         data = response.json()
+
         return {
             "Cidade": data["name"],
             "País": data["sys"]["country"],
@@ -59,31 +98,39 @@ def get_weather(city: str):
             "Umidade": data["main"]["humidity"],
             "Sensação Térmica": data["main"]["feels_like"],
             "Velocidade do Vento": data["wind"]["speed"],
-            "Pressão": data["main"]["pressure"]
+            "Pressão": data["main"]["pressure"],
         }
 
-    except requests.exceptions.Timeout:                                                                 # Se a requisição exceder o timeout, registre o erro e retorne um erro HTTP 504
-
-        logger.error(f"Timeout ao buscar clima para {city}")                                            # Registra o erro de timeout no log(terminal ou arquivo de log) → Para você (desenvolvedor)
-        raise HTTPException(status_code=504, detail="Serviço de previsão indisponível (timeout)")       # Retorna um erro HTTP 504  com a mensagem→ Para o usuário/cliente da API
-
-    except requests.exceptions.ConnectionError:                                                         # Se ocorrer um erro de conexão, registre o erro e retorne um erro HTTP 503
-
-        logger.error(f"Erro de conexão ao buscar clima para {city}")                                    # Registra o erro de conexão no log(terminal ou arquivo de log) → Para você (desenvolvedor)
-        raise HTTPException(status_code=503, detail="Serviço de previsão indisponível")                 # Retorna um erro HTTP 504  com a mensagem → Para o usuário/cliente da API
-
-    except requests.exceptions.RequestException as e:                                                   # Para outros erros relacionados à requisição, registre o erro e retorne um erro HTTP 500
-
-        logger.error(f"Erro ao buscar clima para {city}: {e}")                                          # Registra o erro genérico no log(terminal ou arquivo de log) → Para você (desenvolvedor)
-        raise HTTPException(status_code=500, detail="Erro ao buscar previsão do tempo")                 # Retorna um erro HTTP 500 com a mensagem → Para o usuário/cliente da API
+    except HTTPException:
+        raise
+    except requests.Timeout as error:
+        logger.warning("Timeout ao buscar clima para %s: %s", normalized_city, error)
+        raise HTTPException(
+            status_code=504,
+            detail="O serviço de previsão demorou demais para responder.",
+        ) from error
+    except requests.ConnectionError as error:
+        logger.warning("Falha de conexão ao buscar clima para %s: %s", normalized_city, error)
+        raise HTTPException(
+            status_code=503,
+            detail="Não foi possível conectar ao serviço de previsão.",
+        ) from error
+    except (requests.RequestException, KeyError, TypeError, ValueError) as error:
+        logger.exception("Erro inesperado ao buscar clima para %s", normalized_city)
+        raise HTTPException(
+            status_code=502,
+            detail="O serviço de previsão retornou uma resposta inválida.",
+        ) from error
 
 
 @app.get("/weather/{city}")
-def weather(city: str):
+def weather(city: str) -> dict:
     return get_weather(city)
 
 
 @app.get("/health")
-def health_check():
-    return {"status": "ok"}
-
+def health_check() -> dict:
+    return {
+        "status": "ok",
+        "weather_service_configured": bool(API_KEY),
+    }
