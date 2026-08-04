@@ -2,6 +2,10 @@
 
 Estudos e experimentos com preparação de dados, classificação, redes neurais e modelos de aprendizado de máquina.
 
+<p align="center">
+  <a href="../README.md">← Voltar ao catálogo principal</a>
+</p>
+
 ## Projetos
 
 | Projeto | Descrição | Tecnologias | Status |
