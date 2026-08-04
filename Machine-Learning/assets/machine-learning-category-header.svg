@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-labelledby="title desc">
+  <title id="title">Machine Learning</title>
+  <desc id="desc">Modelos, dados, redes neurais e agentes locais</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#052E2B"/><stop offset="0.56" stop-color="#15803D"/><stop offset="1" stop-color="#6D28D9"/></linearGradient></defs>
+  <rect width="1200" height="300" rx="24" fill="url(#bg)"/>
+  <g transform="translate(924 62)" fill="none" stroke="#DCFCE7" stroke-width="7" stroke-linecap="round" opacity=".8">
+    <circle cx="105" cy="80" r="31"/><circle cx="35" cy="35" r="16"/><circle cx="35" cy="125" r="16"/><circle cx="180" cy="28" r="16"/><circle cx="190" cy="132" r="16"/>
+    <path d="M50 42 78 62M50 117l28-20M132 60l34-24M134 99l41 24M105 111v45M76 156h58"/>
+  </g>
+  <g font-family="Segoe UI,Arial,sans-serif">
+    <text x="70" y="82" fill="#BBF7D0" font-size="23" font-weight="700" letter-spacing="4">DADOS • MODELOS • REDES NEURAIS</text>
+    <text x="70" y="160" fill="#FFFFFF" font-size="62" font-weight="800">MACHINE LEARNING</text>
+    <text x="70" y="215" fill="#DCFCE7" font-size="25">Experimentos reproduzíveis, comparação e IA local</text>
+    <text x="70" y="258" fill="#E9D5FF" font-size="18">SCIKIT-LEARN • TENSORFLOW • LANGCHAIN • OLLAMA</text>
+  </g>
+</svg>
