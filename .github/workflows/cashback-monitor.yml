@@ -46,9 +46,10 @@ jobs:
           import os
 
           dados = json.loads(os.environ["RESPONSE"])
-          if not isinstance(dados, list):
-              raise SystemExit("A API respondeu, mas o histórico não retornou uma lista JSON.")
-          print(f"Banco acessível. Registros encontrados: {len(dados)}")
+          historico = dados.get("historico") if isinstance(dados, dict) else None
+          if not isinstance(historico, list):
+              raise SystemExit("A API respondeu, mas o campo historico não retornou uma lista JSON.")
+          print(f"Banco acessível. Registros encontrados: {len(historico)}")
           PY
 
       - name: Criar alerta no GitHub se houver falha
