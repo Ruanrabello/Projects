@@ -1,0 +1,77 @@
+name: Monitoramento - Calculadora de Cashback
+
+on:
+  schedule:
+    # Todos os dias às 10:00 no horário de Brasília (13:00 UTC)
+    - cron: "0 13 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: monitoramento-calculadora-cashback
+  cancel-in-progress: true
+
+jobs:
+  verificar-aplicacao:
+    name: Verificar site, API e banco
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    steps:
+      - name: Verificar frontend na Vercel
+        run: |
+          curl --fail --show-error --silent --location \
+            --max-time 60 \
+            "https://calculadora-cashback-w34p.vercel.app" > /dev/null
+
+      - name: Acordar e verificar backend no Render
+        run: |
+          curl --fail --show-error --silent --location \
+            --retry 3 --retry-delay 20 --retry-all-errors \
+            --max-time 180 \
+            "https://calculadora-cashback-csom.onrender.com/health"
+
+      - name: Consultar histórico no Supabase
+        run: |
+          resposta="$(curl --fail --show-error --silent --location \
+            --retry 3 --retry-delay 20 --retry-all-errors \
+            --max-time 180 \
+            "https://calculadora-cashback-csom.onrender.com/historico")"
+
+          RESPONSE="$resposta" python - <<'PY'
+          import json
+          import os
+
+          dados = json.loads(os.environ["RESPONSE"])
+          if not isinstance(dados, list):
+              raise SystemExit("A API respondeu, mas o histórico não retornou uma lista JSON.")
+          print(f"Banco acessível. Registros encontrados: {len(dados)}")
+          PY
+
+      - name: Criar alerta no GitHub se houver falha
+        if: ${{ failure() }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          titulo="Monitoramento: Calculadora de Cashback indisponível"
+          issue="$(gh issue list --state open --search "\"$titulo\" in:title" --json number --jq '.[0].number // empty')"
+
+          if [ -z "$issue" ]; then
+            gh issue create \
+              --title "$titulo" \
+              --assignee "$GITHUB_REPOSITORY_OWNER" \
+              --body "A verificação automática encontrou uma falha no site, na API ou no banco Supabase.
+
+          Acesse a execução com erro em:
+          $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          else
+            gh issue comment "$issue" \
+              --body "A falha aconteceu novamente em $(date -u '+%d/%m/%Y %H:%M UTC').
+
+          Execução:
+          $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          fi
