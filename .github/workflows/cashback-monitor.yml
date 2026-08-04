@@ -5,6 +5,12 @@ on:
     # Todos os dias às 10:00 no horário de Brasília (13:00 UTC)
     - cron: "0 13 * * *"
   workflow_dispatch:
+    inputs:
+      testar_alerta:
+        description: "Simular uma falha para validar o alerta"
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -52,6 +58,12 @@ jobs:
           print(f"Banco acessível. Registros encontrados: {len(historico)}")
           PY
 
+      - name: Simular falha do alerta
+        if: ${{ inputs.testar_alerta == true }}
+        run: |
+          echo "Falha simulada para validar a criação do alerta."
+          exit 1
+
       - name: Criar alerta no GitHub se houver falha
         if: ${{ failure() }}
         continue-on-error: true
@@ -59,10 +71,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           titulo="Monitoramento: Calculadora de Cashback indisponível"
-          issue="$(gh issue list --state open --search "\"$titulo\" in:title" --json number --jq '.[0].number // empty')"
+          issue="$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "\"$titulo\" in:title" --json number --jq '.[0].number // empty')"
 
           if [ -z "$issue" ]; then
             gh issue create \
+              --repo "$GITHUB_REPOSITORY" \
               --title "$titulo" \
               --assignee "$GITHUB_REPOSITORY_OWNER" \
               --body "A verificação automática encontrou uma falha no site, na API ou no banco Supabase.
@@ -71,6 +84,7 @@ jobs:
           $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
           else
             gh issue comment "$issue" \
+              --repo "$GITHUB_REPOSITORY" \
               --body "A falha aconteceu novamente em $(date -u '+%d/%m/%Y %H:%M UTC').
 
           Execução:
