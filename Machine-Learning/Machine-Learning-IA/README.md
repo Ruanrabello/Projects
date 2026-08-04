@@ -20,64 +20,58 @@
 
 ## Visão geral
 
-O **Machine Learning & IA** reúne estudos aplicados que mostram a evolução entre modelos clássicos, redes neurais e agentes locais. Cada script pode ser executado separadamente, permitindo comparar técnicas, dados de entrada e resultados.
-
-O objetivo é documentar de forma prática conceitos como preparação de dados, vetorização de texto, divisão entre treino e teste, classificação, avaliação de modelos e uso de modelos locais por meio do Ollama.
+O **Machine Learning & IA** reúne experimentos independentes com modelos clássicos, redes neurais e agentes locais. Os scripts usam funções, pontos de entrada explícitos e seeds para tornar a execução mais previsível e evitar treinamento acidental durante uma importação.
 
 ## Projetos incluídos
 
 | Área | Arquivo | Objetivo |
 |---|---|---|
-| Agente básico | `Agentes/App_v1.py` | Realizar uma chamada simples a um modelo local |
-| Agente com histórico | `Agentes/App_v2.py` | Manter o contexto da conversa |
-| Agente com persona | `Agentes/App_v3.py` | Aplicar instruções de sistema ao assistente |
-| Classificação Iris | `Modelos/Ml_iris.py` | Classificar flores com regressão logística |
-| Detecção de spam | `Modelos/NB_RN.py` | Comparar Naive Bayes e rede neural |
-| Toxicidade | `Modelos/RN_RL.py` | Comparar regressão logística e rede neural em textos |
+| Agente básico | `Agentes/App_v1.py` | Fazer uma chamada simples ao Ollama |
+| Agente com histórico | `Agentes/App_v2.py` | Manter contexto limitado e permitir encerramento controlado |
+| Agente com persona | `Agentes/App_v3.py` | Aplicar instruções de sistema e histórico limitado |
+| Classificação Iris | `Modelos/Ml_iris.py` | Usar pipeline de padronização e regressão logística |
+| Detecção de spam | `Modelos/NB_RN.py` | Comparar Naive Bayes e rede neural com seeds fixas |
+| Toxicidade | `Modelos/RN_RL.py` | Comparar regressão logística e rede neural usando dataset interno |
 
-## Principais conceitos demonstrados
+## Práticas aplicadas
 
-- Preparação e padronização de dados.
-- Divisão entre treino e teste.
-- Vetorização de textos com `CountVectorizer`.
-- Regressão logística e Naive Bayes.
-- Redes neurais com TensorFlow/Keras.
-- Métricas de acurácia.
-- Agentes locais com LangChain e Ollama.
-- Histórico de mensagens e prompt de sistema.
+- Divisão estratificada entre treino e teste.
+- Pipelines para evitar inconsistência no pré-processamento.
+- Seeds em Python, NumPy e TensorFlow.
+- Relatórios de classificação e previsões de exemplo.
+- Datasets carregados por caminhos relativos ao projeto.
+- Agentes com histórico limitado e comando de saída.
+- Modelo do Ollama configurável pela variável `OLLAMA_MODEL`.
 
 ## Arquitetura dos experimentos
 
 ```text
-Dataset ou texto
-      │
-      ▼
-Preparação e vetorização
-      │
-      ▼
-Treino / teste
-      │
-      ▼
+Dataset
+   │
+   ▼
+Validação e preparação
+   │
+   ▼
+Treino / teste estratificado
+   │
+   ▼
 Modelo clássico ou rede neural
-      │
-      ▼
-Métricas e previsões
+   │
+   ▼
+Métricas e inferência
 ```
 
 ```text
-Prompt do usuário
-      │
-      ▼
-LangChain
-      │
-      ▼
-Ollama + modelo local
-      │
-      ▼
-Resposta e histórico
+Prompt + histórico limitado
+            │
+            ▼
+       LangChain
+            │
+            ▼
+ Ollama + modelo configurável
 ```
 
-## Estrutura de pastas
+## Estrutura
 
 ```text
 Machine-Learning-IA/
@@ -100,16 +94,9 @@ Machine-Learning-IA/
 
 ## Como executar localmente
 
-### 1. Clonar o catálogo
-
 ```bash
 git clone https://github.com/Ruanrabello/Projects.git
 cd Projects/Machine-Learning/Machine-Learning-IA
-```
-
-### 2. Criar o ambiente
-
-```bash
 python -m venv .venv
 ```
 
@@ -127,7 +114,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. Executar um modelo
+Execute os modelos:
 
 ```bash
 python Modelos/Ml_iris.py
@@ -135,34 +122,35 @@ python Modelos/NB_RN.py
 python Modelos/RN_RL.py
 ```
 
-Os datasets são carregados diretamente de `Modelos/Bases`, sem depender de caminhos do computador do usuário.
-
-### 4. Executar os agentes locais
-
-Mantenha o Ollama em execução e instale o modelo usado pelos scripts:
+Para os agentes, mantenha o Ollama ativo:
 
 ```bash
 ollama pull gemma4:latest
+```
+
+Opcionalmente defina outro modelo:
+
+```powershell
+$env:OLLAMA_MODEL="qwen3:8b"
 python Agentes/App_v3.py
 ```
 
 ## Limitações atuais
 
-- Os datasets são pequenos e voltados ao aprendizado.
+- Os datasets são pequenos e educacionais.
 - Os resultados não representam modelos prontos para produção.
-- Alguns exemplos ainda concentram preparação, treino e avaliação no mesmo arquivo.
-- Os agentes ainda não possuem interface gráfica ou streaming de resposta.
+- Treino, avaliação e inferência ainda permanecem no mesmo arquivo em alguns exemplos.
+- Ainda não há persistência de modelos treinados ou rastreamento de experimentos.
 
 ## Roadmap
 
-- [x] Adicionar exemplos de regressão logística e Naive Bayes.
-- [x] Comparar modelos clássicos e redes neurais.
-- [x] Criar agentes locais com histórico e instrução de sistema.
-- [x] Substituir caminhos locais por caminhos relativos ao projeto.
+- [x] Usar caminhos relativos e pontos de entrada explícitos.
+- [x] Adicionar seeds e divisão estratificada.
+- [x] Limitar histórico e permitir encerramento dos agentes.
 - [ ] Separar treino, avaliação e inferência em módulos.
-- [ ] Adicionar matrizes de confusão e relatórios de classificação.
-- [ ] Criar notebooks com visualizações.
-- [ ] Adicionar testes e reprodutibilidade por seed.
+- [ ] Adicionar matrizes de confusão e visualizações.
+- [ ] Persistir modelos e métricas.
+- [ ] Adicionar testes automatizados.
 
 ## Licença
 
