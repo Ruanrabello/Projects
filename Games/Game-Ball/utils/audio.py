@@ -100,7 +100,9 @@ class AudioManager:
         sound.play()
 
     def play_music(self) -> None:
-        if not self.enabled or self._music_channel?.get_busy():
+        if not self.enabled:
+            return
+        if self._music_channel is not None and self._music_channel.get_busy():
             return
 
         self._music_sound = _make_tone(55, 3.0, 0.08)
