@@ -218,7 +218,7 @@ input:focus {
     padding: 32px;
     color: #ffffff;
     background-color: #0f3b53;
-    background-image: url("img/Default.jpg");
+    background-image: linear-gradient(135deg, #0f766e 0%, #0f172a 100%);
     background-size: cover;
     background-position: center;
     display: flex;

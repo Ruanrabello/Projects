@@ -1,0 +1,13 @@
+[project]
+name = "previsao-tempo"
+version = "1.1.0"
+description = "Aplicação full stack de previsão do tempo com FastAPI."
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.117.1,<1.0.0",
+    "python-dotenv>=1.1.1,<2.0.0",
+    "requests>=2.32.5,<3.0.0",
+]
+
+[tool.vercel]
+entrypoint = "Backend.main:app"

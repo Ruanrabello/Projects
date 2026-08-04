@@ -13,7 +13,11 @@ const dialog = document.getElementById("all-weather-dialog");
 const closeDialogButton = document.getElementById("close-dialog-btn");
 const summaryList = document.getElementById("all-weather-list");
 
-const API_BASE_URL = window.WEATHER_API_URL || "http://localhost:8000";
+const isLocalDevelopment = ["localhost", "127.0.0.1"].includes(
+    window.location.hostname,
+);
+const API_BASE_URL = window.WEATHER_API_URL
+    || (isLocalDevelopment ? "http://localhost:8000" : "");
 const REQUEST_TIMEOUT_MS = 12000;
 
 let cards = [];
@@ -86,28 +90,33 @@ function createCards(data) {
 }
 
 function getBackgroundImage(index) {
-    const defaultImages = {
-        0: "img/Default.jpg",
-        3: "img/water-drops.jpg",
-        4: "img/Happy.jpg",
-        5: "img/Windy-desert.jpg",
-        6: "img/Pressure.jpg",
+    const defaultBackgrounds = {
+        0: "linear-gradient(135deg, #14b8a6 0%, #0f172a 100%)",
+        3: "linear-gradient(135deg, #38bdf8 0%, #1d4ed8 100%)",
+        4: "linear-gradient(135deg, #fb923c 0%, #c2410c 100%)",
+        5: "linear-gradient(135deg, #67e8f9 0%, #0369a1 100%)",
+        6: "linear-gradient(135deg, #a78bfa 0%, #4c1d95 100%)",
     };
 
     if (index === 1) {
-        if (Number(weatherData.Temperatura) >= 30) return "img/Hot-desert.jpg";
-        if (Number(weatherData.Temperatura) <= 15) return "img/snow.jpg";
-        return "img/Sunny-sky.jpg";
+        if (Number(weatherData.Temperatura) >= 30) {
+            return "linear-gradient(135deg, #f97316 0%, #991b1b 100%)";
+        }
+        if (Number(weatherData.Temperatura) <= 15) {
+            return "linear-gradient(135deg, #bae6fd 0%, #2563eb 100%)";
+        }
+        return "linear-gradient(135deg, #facc15 0%, #0284c7 100%)";
     }
 
     if (index === 2) {
         const description = String(weatherData.Descrição || "").toLowerCase();
         return description.includes("chuva") || description.includes("garoa")
-            ? "img/Rain-weather.jpg"
-            : "img/Cloud-sky.jpg";
+            ? "linear-gradient(135deg, #475569 0%, #0f172a 100%)"
+            : "linear-gradient(135deg, #94a3b8 0%, #334155 100%)";
     }
 
-    return defaultImages[index] || "img/Default.jpg";
+    return defaultBackgrounds[index]
+        || "linear-gradient(135deg, #0f766e 0%, #0f172a 100%)";
 }
 
 function updatePagination() {
@@ -152,7 +161,7 @@ function renderCard() {
         }
     });
 
-    forecastPanel.style.backgroundImage = `url('${getBackgroundImage(currentIndex)}')`;
+    forecastPanel.style.backgroundImage = getBackgroundImage(currentIndex);
     updatePagination();
 }
 

@@ -16,6 +16,8 @@
 
 <p align="center">
   <a href="../../README.md">← Voltar ao catálogo de projetos</a>
+  ·
+  <a href="https://previsao-tempo-ruan.vercel.app">Abrir aplicação online</a>
 </p>
 
 ## Visão geral
@@ -59,7 +61,7 @@ Previsao-Tempo/
 │   ├── main.py
 │   ├── requirements.txt
 │   └── .env.example
-├── Frontend/
+├── public/
 │   ├── img/
 │   ├── index.html
 │   ├── script.js
@@ -67,7 +69,8 @@ Previsao-Tempo/
 │   └── package.json
 ├── assets/
 │   └── weather-header.svg
-├── .gitignore
+├── pyproject.toml
+├── vercel.json
 └── README.md
 ```
 
@@ -110,11 +113,22 @@ uvicorn main:app --host 127.0.0.1 --port 8000 --reload
 Em outro terminal:
 
 ```bash
-cd ../Frontend
+cd ../public
 python -m http.server 3000
 ```
 
 Acesse `http://localhost:3000`.
+
+## Deploy na Vercel
+
+O front-end e o FastAPI são publicados juntos no mesmo domínio.
+
+1. Importe o repositório `Ruanrabello/Projects` na Vercel.
+2. Defina **Root Directory** como `Aplicacoes-Web/Previsao-Tempo`.
+3. Cadastre `API_KEY` nas variáveis de ambiente com a chave da OpenWeather.
+4. Faça o deploy. A Vercel publica a pasta `public` e carrega `Backend.main:app` pelo `pyproject.toml`.
+
+A chave deve permanecer somente nas variáveis da Vercel ou no `.env` local; nunca deve ser enviada ao GitHub.
 
 ## Endpoints
 
@@ -129,13 +143,12 @@ Acesse `http://localhost:3000`.
 - A API não consulta o serviço externo sem configuração válida.
 - O CORS é limitado aos ambientes locais documentados.
 - Respostas não JSON, dados numéricos inválidos e falhas externas são tratados.
-- O front-end só usa imagens que existem dentro do projeto.
+- O front-end usa gradientes locais e não depende de imagens ausentes.
 
 ## Limitações atuais
 
 - Exibe apenas as condições atuais.
-- A URL padrão do back-end é local.
-- Ainda não possui testes automatizados nem deploy documentado.
+- Ainda não possui testes automatizados.
 - Uma captura real da interface redesenhada ainda precisa ser adicionada.
 
 ## Roadmap
@@ -147,7 +160,7 @@ Acesse `http://localhost:3000`.
 - [ ] Adicionar screenshot ou GIF da interface atual.
 - [ ] Adicionar previsão de cinco dias e geolocalização.
 - [ ] Criar testes automatizados.
-- [ ] Preparar configuração para deploy.
+- [x] Preparar configuração para deploy na Vercel.
 
 ## Licença
 
