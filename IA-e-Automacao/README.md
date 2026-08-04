@@ -2,6 +2,10 @@
 
 Projetos que combinam inteligência artificial, voz, integrações e automação de tarefas.
 
+<p align="center">
+  <a href="../README.md">← Voltar ao catálogo principal</a>
+</p>
+
 ## Projetos
 
 | Projeto | Descrição | Tecnologias | Status |
