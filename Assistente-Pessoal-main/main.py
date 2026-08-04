@@ -1,40 +1,52 @@
-from Core.voz import ouvir_microfone, falar_texto
-from Core.ia import chamar_ia
 from Core.comandos import interpretar_comando
-from Core.historico import carregar_historico, adicionar_mensagem
+from Core.historico import adicionar_mensagem, carregar_historico
+from Core.ia import chamar_ia
+from Core.voz import falar_texto, ouvir_microfone
 
 
-# ? Hisótico da conversa
-historico = carregar_historico()
+def executar_assistente() -> None:
+    historico = carregar_historico()
 
-print("Assistente iniciado. Diga 'PARAR' para encerrar.")
+    print("Assistente iniciado. Diga 'parar' ou 'encerrar' para finalizar.")
 
-# ? Loop infinito que mantém o assistente escutando até receber o comando de encerrar (break).
-while True:
+    while True:
+        try:
+            comando = ouvir_microfone()
+        except Exception as erro:
+            print(f"Erro ao acessar o microfone: {erro}")
+            falar_texto("Não consegui acessar o microfone. Tente novamente.")
+            continue
 
-    # ? Chama a função eque pega oque vc fala e retorna o texto transcrito(string) e associa a variavel
-    comando = ouvir_microfone()
-    # ? Se a função retorna "", então continue reinicia o loop sem processar nada.
-    if comando == "":
-        continue
+        if not comando or not comando.strip():
+            continue
 
-    if "parar" in comando.lower() or "encerrar" in comando.lower():
-        falar_texto(
-            "Encerrando assistente. foi um prazer auxiliá-lo SENHOR Ruan.")
-        break
+        comando = comando.strip()
+        comando_normalizado = comando.lower()
 
-    # ? Ele chama função que abre as urls e apps de acordo com a palavra chave q a gente fala, se a funçlãoindetificar a palavra chave vai abrir, exemplo o youtube
-    resposta_comando = interpretar_comando(comando)
-    # ? e vai retornar um texto (Exemplo: ("Abrindo Youtube..."))
-    if resposta_comando:
-        falar_texto(resposta_comando)
-        continue
-        # ? Se não for comando direto, enviar para a IA
-    # ? Vai adicionar assim no meu historico.json  historico.append({"role": "user", "content": comando}), comando é oque eu falei
-    resposta_ia = chamar_ia(comando, historico)
-    # ? e depois vai adicionar nese formato porem a resposta da ia
-    adicionar_mensagem(historico, "user", comando)
-    adicionar_mensagem(historico, "assistant", resposta_ia)
+        if "parar" in comando_normalizado or "encerrar" in comando_normalizado:
+            falar_texto("Encerrando o assistente. Foi um prazer ajudar.")
+            break
 
-    # ? Falar a respsota da IA
-    falar_texto(resposta_ia)
+        try:
+            resposta_comando = interpretar_comando(comando)
+        except Exception as erro:
+            print(f"Erro ao interpretar comando: {erro}")
+            resposta_comando = None
+
+        if resposta_comando:
+            falar_texto(resposta_comando)
+            continue
+
+        try:
+            resposta_ia = chamar_ia(comando, historico)
+        except RuntimeError as erro:
+            resposta_ia = str(erro)
+            print(resposta_ia)
+
+        adicionar_mensagem(historico, "user", comando)
+        adicionar_mensagem(historico, "assistant", resposta_ia)
+        falar_texto(resposta_ia)
+
+
+if __name__ == "__main__":
+    executar_assistente()
