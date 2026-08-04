@@ -6,6 +6,9 @@
 *.pem
 *.key
 
+# Project moved to its own repository
+/AI Business Assistant/
+
 # Python
 __pycache__/
 *.py[cod]

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-labelledby="title description">
+  <title id="title">Projects</title>
+  <desc id="description">Catálogo de projetos em Back-end, Dados, Inteligência Artificial e Automação</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071426"/>
+      <stop offset="0.55" stop-color="#123260"/>
+      <stop offset="1" stop-color="#2d1759"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="0.55" stop-color="#4f8cff"/>
+      <stop offset="1" stop-color="#a855f7"/>
+    </linearGradient>
+    <pattern id="grid" width="42" height="42" patternUnits="userSpaceOnUse">
+      <path d="M42 0H0V42" fill="none" stroke="#b9d8ff" stroke-opacity="0.07"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="300" rx="24" fill="url(#bg)"/>
+  <rect width="1200" height="300" rx="24" fill="url(#grid)"/>
+  <circle cx="1045" cy="92" r="112" fill="#22d3ee" fill-opacity="0.10"/>
+  <circle cx="1135" cy="255" r="148" fill="#a855f7" fill-opacity="0.13"/>
+  <path d="M820 252C936 156 1038 145 1190 60" fill="none" stroke="url(#accent)" stroke-opacity="0.42" stroke-width="2"/>
+  <rect x="72" y="61" width="82" height="5" rx="2.5" fill="url(#accent)"/>
+  <text x="72" y="142" fill="#fff" font-family="Segoe UI, Arial, sans-serif" font-size="62" font-weight="700">PROJECTS</text>
+  <text x="75" y="192" fill="#bfd0ec" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="500" letter-spacing="2.1">BACK-END  •  DADOS  •  IA  •  AUTOMAÇÃO</text>
+  <text x="75" y="240" fill="#8fb2dc" font-family="Segoe UI, Arial, sans-serif" font-size="17">Aplicações, estudos e experimentos organizados em um único catálogo.</text>
+</svg>

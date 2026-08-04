@@ -1,4 +1,6 @@
-# Projects
+<p align="center">
+  <img src="./assets/projects-header.svg" width="100%" alt="Projects — Back-end, Dados, IA e Automação">
+</p>
 
 <p align="center">
   <strong>Projetos práticos de Back-end, Dados, Inteligência Artificial e Automação</strong>
@@ -17,7 +19,7 @@ Este repositório reúne aplicações, estudos e experimentos desenvolvidos para
 
 | Projeto | Área | Tecnologias | Status |
 |---|---|---|---|
-| [AI Business Assistant](./AI%20Business%20Assistant) | Back-end e IA | FastAPI, React, PostgreSQL, Ollama, Gemini e Grok | Em desenvolvimento |
+| [Enterprise AI Assistant](https://github.com/Ruanrabello/enterprise-ai-assistant) | Back-end e IA | FastAPI, React, PostgreSQL, Ollama, Gemini e Grok | Projeto principal |
 | [Assistente Pessoal](./Assistente-Pessoal-main) | IA e automação | Python, Groq e YouTube API | Protótipo funcional |
 | [Previsão do Tempo](./Previsao-Tempo) | API e Front-end | Python, HTML, CSS e JavaScript | Concluído |
 | [Machine Learning & IA](./MachineLearnind_IA_Projects) | Dados e IA | Python, Pandas e Scikit-learn | Laboratório de estudos |
@@ -32,7 +34,7 @@ Este repositório reúne aplicações, estudos e experimentos desenvolvidos para
 - **Front-end:** interfaces web para consumo das aplicações.
 - **Games:** projetos para praticar lógica, eventos e orientação a objetos.
 
-Cada pasta contém o código-fonte e, nos projetos principais, instruções próprias de instalação e execução.
+Cada pasta contém o código-fonte e, nos projetos principais, instruções próprias de instalação e execução. Projetos maiores podem ganhar um repositório dedicado e continuar referenciados neste catálogo.
 
 ## Como explorar
 
