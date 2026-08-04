@@ -1,111 +1,160 @@
-# 1. Classificador de comentários tóxicos
-# Entrada: texto (comentário)
-# Saída: tóxico ou não tóxico
+"""Compara regressão logística e rede neural na classificação de toxicidade."""
+
+from pathlib import Path
 
 import pandas as pd
-import numpy as np
-from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
-from sklearn.feature_extraction.text import CountVectorizer
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.layers import Input
+from sklearn.model_selection import train_test_split
+from tensorflow.keras import Sequential
+from tensorflow.keras.layers import Dense, Input
 
-# ===================================
-#  Modelo 1: Regressão Logística
-# ===================================
-print("\n\n--- Modelo 1: Regressão Logística ---\n")
-
-def baixar_arquivoToxico():
-    Comentarios = pd.read_csv(r"C:\Users\ruanb\Downloads\Estudos\Code\Ml_Dl\Toxic_Comments.csv")  # Lendo o arquivo CSV com os comentários tóxicos (certifique-se de usar o caminho correto para o seu arquivo)
-    return Comentarios
-
-df = baixar_arquivoToxico()                         
-x = df['comentario']   # entrada (texto)
-y = df['toxico']       # saída (rótulo)
-
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=42)
-
-vectorizer = CountVectorizer(ngram_range=(1,2))
-x_train = vectorizer.fit_transform(x_train) # fit transform → ele vai aprender o vocabulário dos comentários de treino e transformar os textos em vetores numéricos (matriz esparsa)
-x_test = vectorizer.transform(x_test) # transform → ele vai usar o mesmo vocabulário aprendido no treino para transformar os comentários de teste em vetores numéricos (matriz esparsa)
-
-modelo = LogisticRegression()
-modelo.fit(x_train, y_train)
-
-y_pred = modelo.predict(x_test)
-acuracia = accuracy_score(y_test, y_pred)
-print(f"Acurácia do Modelo de Regressão Logística: {acuracia * 100:.2f}%")
+BASE_DIR = Path(__file__).resolve().parent
+DATASET_PATH = BASE_DIR / "Bases" / "Toxic_Comments.csv"
+RANDOM_STATE = 42
 
 
-testes = [
-    "você é um idiota",
-    "eu te odeio",
-    "você é incrível",
-    "eu gosto de você",
-    "você é um lixo"
-]
+def carregar_dados() -> pd.DataFrame:
+    """Carrega o dataset versionado dentro do próprio projeto."""
+    if not DATASET_PATH.exists():
+        raise FileNotFoundError(
+            f"Dataset não encontrado em: {DATASET_PATH}. "
+            "Confirme se a pasta Modelos/Bases foi clonada corretamente."
+        )
 
-testes_transformados = vectorizer.transform(testes)
-previsoes = modelo.predict(testes_transformados)
+    dados = pd.read_csv(DATASET_PATH)
+    colunas_obrigatorias = {"comentario", "toxico"}
+    if not colunas_obrigatorias.issubset(dados.columns):
+        raise ValueError(
+            "O dataset precisa conter as colunas 'comentario' e 'toxico'."
+        )
 
-for comentario, previsao in zip(testes, previsoes):
-    label = "Tóxico" if previsao == 1 else "Não Tóxico"
-    print(f"Comentário: '{comentario}' → {label}")
-
-
-# ===================================
-#  Modelo 2: Rede Neural Simples        
-# ===================================
-
-print("\n\n--- Modelo 2: Rede Neural Simples ---\n")
-
-# x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=42)
-# vectorizer = CountVectorizer()
-# x_train = vectorizer.fit_transform(x_train) 
-# x_test = vectorizer.transform(x_test)
+    return dados.dropna(subset=["comentario", "toxico"])
 
 
-x_train_nn = x_train.toarray()
-x_test_nn = x_test.toarray()
+def preparar_dados(dados: pd.DataFrame):
+    textos = dados["comentario"].astype(str)
+    rotulos = dados["toxico"].astype(int)
 
-model_nn = Sequential([
-    Input(shape=(x_train_nn.shape[1],)),
-    Dense(32, activation='relu'),
-    Dense(16, activation='relu'),
-    Dense(1, activation='sigmoid')
-])
-model_nn.compile(
-    loss='binary_crossentropy',
-    optimizer='adam', 
-    metrics=['accuracy']
-)
+    x_treino_texto, x_teste_texto, y_treino, y_teste = train_test_split(
+        textos,
+        rotulos,
+        test_size=0.30,
+        random_state=RANDOM_STATE,
+        stratify=rotulos,
+    )
 
-model_nn.fit(
-    x_train_nn, y_train, 
-    epochs=30, 
-    batch_size=8,
-    verbose=1
-)
+    vetorizador = CountVectorizer(ngram_range=(1, 2))
+    x_treino = vetorizador.fit_transform(x_treino_texto)
+    x_teste = vetorizador.transform(x_teste_texto)
 
-loss, accuracy = model_nn.evaluate(x_test_nn, y_test, verbose=0)
-print(f"Acurácia do Modelo de Rede Neural: {accuracy * 100:.2f}%")
-
-testes = [
-    "você é incrível mesmo",
-    "isso está horrível",
-    "não ficou tão ruim",
-    "eu odiei isso",
-    "ótimo resultado"
-]
-testes_transformados = vectorizer.transform(testes).toarray()
-previsoes_nn = model_nn.predict(testes_transformados)
-
-for comentario, previsao in zip(testes, previsoes_nn):
-    label = "Tóxico" if previsao[0] >= 0.5 else "Não Tóxico"
-    print(f"Comentário: '{comentario}' → {label}")
+    return vetorizador, x_treino, x_teste, y_treino, y_teste
 
 
+def executar_regressao_logistica(
+    vetorizador,
+    x_treino,
+    x_teste,
+    y_treino,
+    y_teste,
+) -> None:
+    print("\n--- Modelo 1: Regressão Logística ---\n")
+
+    modelo = LogisticRegression(max_iter=1_000, random_state=RANDOM_STATE)
+    modelo.fit(x_treino, y_treino)
+
+    previsoes = modelo.predict(x_teste)
+    acuracia = accuracy_score(y_teste, previsoes)
+    print(f"Acurácia: {acuracia * 100:.2f}%")
+
+    exemplos = [
+        "você é um idiota",
+        "eu te odeio",
+        "você é incrível",
+        "eu gosto de você",
+        "você é um lixo",
+    ]
+    exemplos_vetorizados = vetorizador.transform(exemplos)
+
+    for comentario, previsao in zip(
+        exemplos,
+        modelo.predict(exemplos_vetorizados),
+    ):
+        classe = "Tóxico" if previsao == 1 else "Não tóxico"
+        print(f"Comentário: {comentario!r} → {classe}")
 
 
+def executar_rede_neural(
+    vetorizador,
+    x_treino,
+    x_teste,
+    y_treino,
+    y_teste,
+) -> None:
+    print("\n--- Modelo 2: Rede Neural Simples ---\n")
+
+    x_treino_denso = x_treino.toarray()
+    x_teste_denso = x_teste.toarray()
+
+    modelo = Sequential(
+        [
+            Input(shape=(x_treino_denso.shape[1],)),
+            Dense(32, activation="relu"),
+            Dense(16, activation="relu"),
+            Dense(1, activation="sigmoid"),
+        ]
+    )
+    modelo.compile(
+        loss="binary_crossentropy",
+        optimizer="adam",
+        metrics=["accuracy"],
+    )
+    modelo.fit(
+        x_treino_denso,
+        y_treino,
+        epochs=30,
+        batch_size=8,
+        verbose=1,
+    )
+
+    _, acuracia = modelo.evaluate(x_teste_denso, y_teste, verbose=0)
+    print(f"Acurácia: {acuracia * 100:.2f}%")
+
+    exemplos = [
+        "você é incrível mesmo",
+        "isso está horrível",
+        "não ficou tão ruim",
+        "eu odiei isso",
+        "ótimo resultado",
+    ]
+    exemplos_vetorizados = vetorizador.transform(exemplos).toarray()
+    previsoes = modelo.predict(exemplos_vetorizados, verbose=0)
+
+    for comentario, previsao in zip(exemplos, previsoes):
+        classe = "Tóxico" if previsao[0] >= 0.5 else "Não tóxico"
+        print(f"Comentário: {comentario!r} → {classe}")
+
+
+def main() -> None:
+    dados = carregar_dados()
+    vetorizador, x_treino, x_teste, y_treino, y_teste = preparar_dados(dados)
+
+    executar_regressao_logistica(
+        vetorizador,
+        x_treino,
+        x_teste,
+        y_treino,
+        y_teste,
+    )
+    executar_rede_neural(
+        vetorizador,
+        x_treino,
+        x_teste,
+        y_treino,
+        y_teste,
+    )
+
+
+if __name__ == "__main__":
+    main()
