@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-labelledby="title desc">
+  <title id="title">IA e Automação</title>
+  <desc id="desc">Inteligência artificial, voz, integrações e automação</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#160B2F"/><stop offset="0.56" stop-color="#6D28D9"/><stop offset="1" stop-color="#EA580C"/></linearGradient></defs>
+  <rect width="1200" height="300" rx="24" fill="url(#bg)"/>
+  <g transform="translate(930 58)" fill="none" stroke="#F5E8FF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity=".82">
+    <rect x="20" y="35" width="180" height="145" rx="28"/><path d="M68 35V14m84 21V14M65 91h1m88 0h1M70 137c26 21 54 21 80 0"/>
+    <path d="M0 94h20m180 0h20M76 180v28m68-28v28M55 208h110"/>
+  </g>
+  <g font-family="Segoe UI,Arial,sans-serif">
+    <text x="70" y="82" fill="#E9D5FF" font-size="23" font-weight="700" letter-spacing="4">IA • VOZ • INTEGRAÇÕES • AUTOMAÇÃO</text>
+    <text x="70" y="160" fill="#FFFFFF" font-size="62" font-weight="800">IA E AUTOMAÇÃO</text>
+    <text x="70" y="215" fill="#F3E8FF" font-size="25">Soluções inteligentes para tarefas, comandos e fluxos</text>
+    <text x="70" y="258" fill="#FED7AA" font-size="18">PYTHON • GROQ • APIS • SPEECH</text>
+  </g>
+</svg>
