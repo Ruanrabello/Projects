@@ -7,12 +7,12 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/IA-7C3AED?style=for-the-badge" alt="Inteligência Artificial">
-  <img src="https://img.shields.io/badge/Back--end-2563EB?style=for-the-badge" alt="Back-end">
-  <img src="https://img.shields.io/badge/Front--end-0891B2?style=for-the-badge" alt="Front-end">
+  <a href="./AI"><img src="https://img.shields.io/badge/IA-7C3AED?style=for-the-badge" alt="Inteligência Artificial"></a>
+  <a href="./Backend"><img src="https://img.shields.io/badge/Back--end-2563EB?style=for-the-badge" alt="Back-end"></a>
+  <a href="./Frontend"><img src="https://img.shields.io/badge/Front--end-0891B2?style=for-the-badge" alt="Front-end"></a>
   <img src="https://img.shields.io/badge/Dados-16A34A?style=for-the-badge" alt="Dados">
   <img src="https://img.shields.io/badge/Automação-EA580C?style=for-the-badge" alt="Automação">
-  <img src="https://img.shields.io/badge/Games-DC2626?style=for-the-badge" alt="Games">
+  <a href="./Games"><img src="https://img.shields.io/badge/Games-DC2626?style=for-the-badge" alt="Games"></a>
 </p>
 
 ## Sobre o repositório
@@ -28,79 +28,73 @@ Projetos grandes e com identidade própria são mantidos em repositórios dedica
 | [Enterprise AI Assistant](https://github.com/Ruanrabello/enterprise-ai-assistant) | Plataforma full stack de IA corporativa com histórico, configuração de modelos e base para RAG | FastAPI, React, PostgreSQL, Ollama, Gemini e Grok | Projeto principal |
 | [Excel VBA Projects](https://github.com/Ruanrabello/Excel-vba-projects) | Coleção de automações para relatórios, tratamento de dados, PDFs e integração com Outlook | Excel e VBA | Repositório dedicado |
 
+## Navegação por categorias
+
+| Categoria | Cor | Projetos | Acesso |
+|---|---:|---:|---|
+| 🤖 Inteligência Artificial | `#7C3AED` | Assistente Pessoal, Machine Learning & IA | [Abrir categoria](./AI) |
+| 🌐 Back-end e APIs | `#2563EB` | Calculadora de Cashback | [Abrir categoria](./Backend) |
+| 💻 Front-end | `#0891B2` | Previsão do Tempo | [Abrir categoria](./Frontend) |
+| 🎮 Games | `#DC2626` | Game Ball | [Abrir categoria](./Games) |
+
 ## Catálogo interno
 
-### 🤖 Inteligência Artificial · `#7C3AED`
-
-Projetos com modelos de linguagem, reconhecimento de voz, machine learning e automações inteligentes.
+### 🤖 Inteligência Artificial
 
 | Projeto | Descrição | Tecnologias | Status |
 |---|---|---|---|
 | [Assistente Pessoal](./Assistente-Pessoal-main) | Assistente por voz capaz de executar comandos locais, consultar IA, buscar vídeos e manter histórico | Python, Groq, voz e YouTube API | Protótipo funcional |
 | [Machine Learning & IA](./MachineLearnind_IA_Projects) | Laboratório de classificação, análise de dados e experimentos com modelos de aprendizado de máquina | Python, Pandas e Scikit-learn | Estudos aplicados |
 
-### 🌐 Back-end e APIs · `#2563EB`
-
-Projetos voltados a regras de negócio, consumo de serviços, persistência e construção de APIs.
+### 🌐 Back-end e APIs
 
 | Projeto | Descrição | Tecnologias | Status |
 |---|---|---|---|
 | [Calculadora de Cashback](./Calculadora_Cashback) | Aplicação para calcular cashback e praticar regras de negócio expostas por API | Python e API REST | Concluído |
-| [Previsão do Tempo](./Previsao-Tempo) | Aplicação que consulta dados meteorológicos em API e apresenta as informações em uma interface web | Python, HTML, CSS e JavaScript | Concluído |
 
-### 💻 Front-end · `#0891B2`
-
-Interfaces e experimentos voltados à apresentação de dados e interação com usuários.
+### 💻 Front-end
 
 | Projeto | Descrição | Tecnologias | Status |
 |---|---|---|---|
-| [Previsão do Tempo](./Previsao-Tempo) | Interface web para consulta e exibição de informações meteorológicas | HTML, CSS e JavaScript | Concluído |
+| [Previsão do Tempo](./Previsao-Tempo) | Interface web para consultar e exibir informações meteorológicas consumindo uma API externa | HTML, CSS e JavaScript | Concluído |
 
-### 📊 Dados · `#16A34A`
-
-Estudos de manipulação, análise, classificação e interpretação de dados.
+### 📊 Dados
 
 | Projeto | Descrição | Tecnologias | Status |
 |---|---|---|---|
-| [Machine Learning & IA](./MachineLearnind_IA_Projects) | Notebooks e scripts para praticar preparação de dados e modelos de classificação | Python, Pandas e Scikit-learn | Laboratório |
+| [Machine Learning & IA](./MachineLearnind_IA_Projects) | Notebooks e scripts para preparação de dados e modelos de classificação | Python, Pandas e Scikit-learn | Laboratório |
 
-### ⚙️ Automação · `#EA580C`
-
-Soluções para reduzir tarefas repetitivas, integrar serviços e executar ações locais.
+### ⚙️ Automação
 
 | Projeto | Descrição | Tecnologias | Status |
 |---|---|---|---|
 | [Assistente Pessoal](./Assistente-Pessoal-main) | Automatiza comandos locais e interações por voz com apoio de IA | Python e APIs | Protótipo funcional |
 
-### 🎮 Games · `#DC2626`
-
-Projetos utilizados para praticar lógica, eventos, movimentação e orientação a objetos.
+### 🎮 Games
 
 | Projeto | Descrição | Tecnologias | Status |
 |---|---|---|---|
 | [Game Ball](./Game-BallBasic) | Jogo simples criado para praticar eventos, colisões e lógica de atualização em tempo real | Python e Pygame | Concluído |
 
-## Como explorar
+## Estrutura planejada
 
-1. Escolha uma categoria ou projeto nas tabelas.
-2. Abra a pasta correspondente.
-3. Leia o README específico antes de executar.
-4. Instale as dependências em um ambiente isolado.
-5. Utilize apenas arquivos `.env.example` como modelo e mantenha credenciais localmente.
+```text
+Projects/
+├── AI/
+│   ├── Assistente-Pessoal/
+│   └── Machine-Learning/
+├── Backend/
+│   └── Calculadora-Cashback/
+├── Frontend/
+│   └── Previsao-Tempo/
+├── Games/
+│   └── Game-Ball/
+├── assets/
+├── README.md
+└── LICENSE
+```
 
-## Padrão visual
-
-Cada categoria possui uma cor para facilitar a leitura do catálogo:
-
-| Categoria | Cor |
-|---|---|
-| Inteligência Artificial | Roxo `#7C3AED` |
-| Back-end e APIs | Azul `#2563EB` |
-| Front-end | Ciano `#0891B2` |
-| Dados | Verde `#16A34A` |
-| Automação | Laranja `#EA580C` |
-| Games | Vermelho `#DC2626` |
-| Estudos gerais | Cinza `#64748B` |
+As categorias já existem e funcionam como índice. A migração física dos projetos será feita de forma gradual para preservar todos os arquivos e evitar perda de conteúdo.
 
 ## Boas práticas aplicadas
 
@@ -111,14 +105,15 @@ Cada categoria possui uma cor para facilitar a leitura do catálogo:
 
 ## Próximas melhorias
 
-- [x] Remover dependências e arquivos gerados do histórico atual do repositório
+- [x] Remover dependências e arquivos gerados do repositório
 - [x] Separar o Enterprise AI Assistant em um repositório dedicado
 - [x] Criar identidade visual para o catálogo
 - [x] Adicionar descrições aos projetos listados
-- [ ] Revisar o código de cada projeto e corrigir erros claros de execução
+- [x] Criar pastas de categorias e navegação por área
+- [ ] Migrar fisicamente cada projeto para sua categoria
+- [ ] Revisar o código dos projetos e corrigir erros claros de execução
 - [ ] Criar ou atualizar READMEs internos restantes
 - [ ] Adicionar screenshots aos projetos com interface
-- [ ] Padronizar nomes de pastas sem quebrar links existentes
 
 ## Autor
 
