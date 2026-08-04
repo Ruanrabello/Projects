@@ -135,6 +135,8 @@ python Modelos/NB_RN.py
 python Modelos/RN_RL.py
 ```
 
+Os datasets são carregados diretamente de `Modelos/Bases`, sem depender de caminhos do computador do usuário.
+
 ### 4. Executar os agentes locais
 
 Mantenha o Ollama em execução e instale o modelo usado pelos scripts:
@@ -149,14 +151,14 @@ python Agentes/App_v3.py
 - Os datasets são pequenos e voltados ao aprendizado.
 - Os resultados não representam modelos prontos para produção.
 - Alguns exemplos ainda concentram preparação, treino e avaliação no mesmo arquivo.
-- O classificador de toxicidade ainda precisa usar o dataset por caminho relativo em todos os ambientes.
+- Os agentes ainda não possuem interface gráfica ou streaming de resposta.
 
 ## Roadmap
 
 - [x] Adicionar exemplos de regressão logística e Naive Bayes.
 - [x] Comparar modelos clássicos e redes neurais.
 - [x] Criar agentes locais com histórico e instrução de sistema.
-- [ ] Corrigir definitivamente caminhos locais restantes.
+- [x] Substituir caminhos locais por caminhos relativos ao projeto.
 - [ ] Separar treino, avaliação e inferência em módulos.
 - [ ] Adicionar matrizes de confusão e relatórios de classificação.
 - [ ] Criar notebooks com visualizações.
