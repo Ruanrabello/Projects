@@ -2,6 +2,10 @@
 
 Projetos desenvolvidos para praticar lógica, eventos, colisões, inteligência de inimigos e organização de sistemas de jogos.
 
+<p align="center">
+  <a href="../README.md">← Voltar ao catálogo principal</a>
+</p>
+
 ## Projetos
 
 | Projeto | Descrição | Tecnologias | Status |
