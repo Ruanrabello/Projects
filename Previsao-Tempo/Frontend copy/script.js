@@ -4,6 +4,14 @@ const cityInput = document.getElementById("cidade");
 const loader = document.getElementById("loader");
 const errorMessage = document.getElementById("error-message");
 const errorText = document.getElementById("error-text");
+const forecastPanel = document.getElementById("forecast-panel");
+const weatherContainer = document.querySelector(".Weather-container");
+const cityTitleHeader = document.getElementById("city-title-header");
+const resetButton = document.getElementById("botao-reset");
+const showAllButton = document.querySelector(".ver-tudo-btn");
+
+const API_BASE_URL = window.WEATHER_API_URL || "http://localhost:8000";
+const REQUEST_TIMEOUT_MS = 12000;
 
 let cards = [];
 let indiceAtual = 0;
@@ -13,39 +21,20 @@ function validateCity(city) {
     const trimmedCity = city.trim();
 
     if (trimmedCity.length < 2 || trimmedCity.length > 50) {
-        return { valid: false, message: "O nome da cidade deve ter entre 2 e 50 caracteres" };
-    }
-    if (!/^[a-zA-ZÀ-ÿ\s\-]+$/.test(trimmedCity)) {
-        return { valid: false, message: "Use apenas letras, hífens e espaços no nome da cidade" };
-    }
-    return { valid: true };
-}
-
-function renderizarCard() {
-    if(cards.length === 0) return;
-
-    document.getElementById("card-title").textContent =
-        cards[indiceAtual].titulo;
-
-    document.getElementById("card-value").textContent =
-        cards[indiceAtual].valor;
-
-    atualizarDots();
-
-    document
-        .querySelectorAll(".option-btn")
-        .forEach(btn => btn.classList.remove("active"));
-
-    const botaoAtivo =
-        document.querySelector(
-            `.option-btn[data-index="${indiceAtual}"]`
-        );
-
-    if (botaoAtivo) {
-        botaoAtivo.classList.add("active");
+        return {
+            valid: false,
+            message: "O nome da cidade deve ter entre 2 e 50 caracteres",
+        };
     }
 
-    atualizarFundoPorCard(indiceAtual);
+    if (!/^[a-zA-ZÀ-ÿ\s\-']+$/.test(trimmedCity)) {
+        return {
+            valid: false,
+            message: "Use apenas letras, espaços, hífens e apóstrofos",
+        };
+    }
+
+    return { valid: true, city: trimmedCity };
 }
 
 function showError(message) {
@@ -61,197 +50,219 @@ function clearError() {
 
 function showLoader() {
     loader.style.display = "flex";
-    errorMessage.style.display = "none";
+    clearError();
 }
 
 function setButtonState(disabled) {
     submitBtn.disabled = disabled;
+    submitBtn.setAttribute("aria-busy", String(disabled));
 }
 
-function atualizarDots(){
+function atualizarDots() {
     const pagination = document.getElementById("pagination");
     pagination.innerHTML = "";
 
-    cards.forEach((_, index)=>{
-        const dot = document.createElement("div");
+    cards.forEach((_, index) => {
+        const dot = document.createElement("button");
+        dot.type = "button";
         dot.classList.add("dot");
-        if(index === indiceAtual){
+        dot.setAttribute("aria-label", `Abrir detalhe ${index + 1}`);
+
+        if (index === indiceAtual) {
             dot.classList.add("active");
+            dot.setAttribute("aria-current", "true");
         }
+
+        dot.addEventListener("click", () => {
+            indiceAtual = index;
+            renderizarCard();
+        });
+
         pagination.appendChild(dot);
     });
 }
 
-function atualizarFundoPorCard(indice){
+function atualizarFundoPorCard(indice) {
+    if (!weatherData) return;
 
-    if(!weatherData) return;
+    const backgrounds = {
+        0: "img/world.jpg",
+        2: "img/Cloud-sky.jpg",
+        3: "img/water-drops.jpg",
+        4: "img/Happy.jpg",
+        5: "img/Windy-desert.jpg",
+        6: "img/Pressure.jpg",
+    };
 
-    const painel = document.getElementById("forecast-panel");
-
-    switch(indice){
-
-        case 0:
-            painel.style.backgroundImage =
-                "url('img/world.jpg')";
-            break;
-
-        case 1:
-
-            if(weatherData.Temperatura >= 30){
-
-                painel.style.backgroundImage =
-                    "url('img/Hot-desert.jpg')";
-
-            } else if(weatherData.Temperatura <= 15){
-
-                painel.style.backgroundImage =
-                    "url('img/snow.jpg')";
-
-            } else {
-
-                painel.style.backgroundImage =
-                    "url('img/Sunny-sky.jpg')";
-            }
-
-            break;
-
-        case 2:
-            painel.style.backgroundImage =
-                "url('img/Cloud-sky.jpg')";
-            break;
-
-        case 3:
-            painel.style.backgroundImage =
-                "url('img/water-drops.jpg')";
-            break;
-
-        case 4:
-            painel.style.backgroundImage =
-                "url('img/Happy.jpg')";
-            break;
-
-        case 5:
-            painel.style.backgroundImage =
-                "url('img/Windy-desert.jpg')";
-            break;
-
-        case 6:
-            painel.style.backgroundImage =
-                "url('img/Pressure.jpg')";
-            break;
+    if (indice === 1) {
+        if (weatherData.Temperatura >= 30) {
+            forecastPanel.style.backgroundImage = "url('img/Hot-desert.jpg')";
+        } else if (weatherData.Temperatura <= 15) {
+            forecastPanel.style.backgroundImage = "url('img/snow.jpg')";
+        } else {
+            forecastPanel.style.backgroundImage = "url('img/Sunny-sky.jpg')";
+        }
+        return;
     }
+
+    const image = backgrounds[indice] || "img/Default.jpg";
+    forecastPanel.style.backgroundImage = `url('${image}')`;
+}
+
+function renderizarCard() {
+    if (cards.length === 0) return;
+
+    document.getElementById("card-title").textContent = cards[indiceAtual].titulo;
+    document.getElementById("card-value").textContent = cards[indiceAtual].valor;
+
+    atualizarDots();
+
+    document.querySelectorAll(".option-btn").forEach((button) => {
+        button.classList.remove("active");
+        button.removeAttribute("aria-current");
+    });
+
+    const activeButton = document.querySelector(
+        `.option-btn[data-index="${indiceAtual}"]`,
+    );
+
+    if (activeButton) {
+        activeButton.classList.add("active");
+        activeButton.setAttribute("aria-current", "true");
+    }
+
+    atualizarFundoPorCard(indiceAtual);
+}
+
+function buildCards(data) {
+    return [
+        { titulo: "🌍 Cidade e País", valor: `${data.Cidade}, ${data.País}` },
+        { titulo: "🌡️ Temperatura", valor: `${Number(data.Temperatura).toFixed(1)} °C` },
+        { titulo: "☁️ Descrição", valor: data.Descrição },
+        { titulo: "💧 Umidade", valor: `${data.Umidade}%` },
+        {
+            titulo: "🤗 Sensação Térmica",
+            valor: `${Number(data["Sensação Térmica"]).toFixed(1)} °C`,
+        },
+        {
+            titulo: "💨 Velocidade do Vento",
+            valor: `${Number(data["Velocidade do Vento"]).toFixed(2)} m/s`,
+        },
+        { titulo: "📈 Pressão", valor: `${data.Pressão} hPa` },
+    ];
+}
+
+async function parseResponse(response) {
+    const contentType = response.headers.get("content-type") || "";
+
+    if (!contentType.includes("application/json")) {
+        throw new Error("A API retornou uma resposta inválida");
+    }
+
+    return response.json();
 }
 
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    const city = cityInput.value;
 
-    const validation = validateCity(city);
+    const validation = validateCity(cityInput.value);
     if (!validation.valid) {
         showError(validation.message);
+        cityInput.focus();
         return;
     }
 
-    clearError();
     showLoader();
     setButtonState(true);
 
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(
+        () => controller.abort(),
+        REQUEST_TIMEOUT_MS,
+    );
+
     try {
         const response = await fetch(
-            `http://localhost:8000/weather/${encodeURIComponent(city)}`
+            `${API_BASE_URL}/weather/${encodeURIComponent(validation.city)}`,
+            { signal: controller.signal },
         );
-        const data = await response.json();
-        weatherData = data;
+
+        const data = await parseResponse(response);
 
         if (!response.ok) {
             throw new Error(data.detail || "Erro ao buscar previsão");
         }
 
+        weatherData = data;
+        cards = buildCards(data);
+        indiceAtual = 0;
+
         loader.style.display = "none";
         clearError();
-        document.getElementById("forecast-panel").style.display = "flex"; // ← adiciona isso
-        document.querySelector(".Weather-container").classList.add("show-result");
+        forecastPanel.style.display = "flex";
+        weatherContainer.classList.add("show-result");
+        cityTitleHeader.textContent = data.Cidade;
 
-
-        // Atualiza dinamicamente o título do cabeçalho da direita com a cidade retornada
-        document.getElementById("city-title-header").textContent = `${data.Cidade}`;
-
-        cards = [
-            { titulo: "🌍 Cidade e País", valor: `${data.Cidade}, ${data.País}` },
-            { titulo: "🌡️ Temperatura", valor: `${data.Temperatura.toFixed(1)} °C` },
-            { titulo: "☁️ Descrição", valor: data.Descrição },
-            { titulo: "💧 Umidade", valor: `${data.Umidade}%` },
-            { titulo: "🤗 Sensação Térmica", valor: `${data["Sensação Térmica"].toFixed(1)} °C` },
-            { titulo: "💨 Velocidade do Vento", valor: `${data["Velocidade do Vento"].toFixed(2)} m/s` },
-            { titulo: "📈 Pressão", valor: `${data.Pressão} hPa` }
-        ];
-
-        indiceAtual = 0;
         renderizarCard();
-
     } catch (error) {
-        let errorMsg = "Erro ao buscar previsão do tempo";
+        console.error("Erro ao consultar previsão:", error);
+
         if (error.name === "AbortError") {
-            errorMsg = "Requisição expirou. Tente novamente";
-        } else if (error.message.includes("Failed to fetch")) {
-            errorMsg = "Erro de conexão. Verifique se a API do Python está rodando";
-        } else if (error.message) {
-            errorMsg = error.message;
+            showError("A consulta demorou demais. Tente novamente.");
+        } else if (error instanceof TypeError) {
+            showError("Não foi possível conectar à API. Verifique se o backend está rodando.");
+        } else {
+            showError(error.message || "Erro ao buscar previsão do tempo");
         }
-        console.error("Erro:", error);
-        showError(errorMsg);
     } finally {
+        window.clearTimeout(timeoutId);
         setButtonState(false);
     }
 });
 
-document.getElementById("next-btn").addEventListener("click", ()=>{
-    if(cards.length === 0) return;
-    indiceAtual++;
-    if(indiceAtual >= cards.length) indiceAtual = 0;
+document.getElementById("next-btn").addEventListener("click", () => {
+    if (cards.length === 0) return;
+    indiceAtual = (indiceAtual + 1) % cards.length;
     renderizarCard();
 });
 
-document.getElementById("prev-btn").addEventListener("click", ()=>{
-    if(cards.length === 0) return;
-    indiceAtual--;
-    if(indiceAtual < 0) indiceAtual = cards.length - 1;
+document.getElementById("prev-btn").addEventListener("click", () => {
+    if (cards.length === 0) return;
+    indiceAtual = (indiceAtual - 1 + cards.length) % cards.length;
     renderizarCard();
 });
 
-// Adiciona o evento de clique para os botões da barra de atalhos
-document.querySelectorAll(".option-btn").forEach(botao => {
-
-    botao.addEventListener("click", () => {
-
-        if(cards.length === 0) return;
-
-        indiceAtual = parseInt(
-            botao.getAttribute("data-index")
-        );
-
+document.querySelectorAll(".option-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+        if (cards.length === 0) return;
+        indiceAtual = Number(button.dataset.index);
         renderizarCard();
     });
-
 });
 
-document.getElementById("botao-reset")
-.addEventListener("click", () => {
+if (showAllButton) {
+    showAllButton.addEventListener("click", () => {
+        if (cards.length === 0) return;
 
+        const summary = cards
+            .map((card) => `${card.titulo}: ${card.valor}`)
+            .join("\n");
+
+        window.alert(summary);
+    });
+}
+
+resetButton.addEventListener("click", () => {
     cityInput.value = "";
-
     cards = [];
     weatherData = null;
     indiceAtual = 0;
 
-    document.getElementById("forecast-panel")
-        .style.display = "none";
-
-    document.getElementById("forecast-panel")
-        .style.backgroundImage = "";
-
-    document.querySelector(".Weather-container")
-        .classList.remove("show-result");
-
-
+    forecastPanel.style.display = "none";
+    forecastPanel.style.backgroundImage = "";
+    weatherContainer.classList.remove("show-result");
+    cityTitleHeader.textContent = "---";
+    clearError();
+    loader.style.display = "none";
+    cityInput.focus();
 });
