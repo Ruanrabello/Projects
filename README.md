@@ -7,6 +7,12 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/Ruanrabello/Projects/actions/workflows/quality.yml"><img src="https://github.com/Ruanrabello/Projects/actions/workflows/quality.yml/badge.svg" alt="Repository Quality"></a>
+  <img src="https://img.shields.io/badge/Licença-MIT-16A34A?style=flat-square" alt="Licença MIT">
+  <img src="https://img.shields.io/badge/Documentação-Padronizada-2563EB?style=flat-square" alt="Documentação padronizada">
+</p>
+
+<p align="center">
   <a href="./Aplicacoes-Web"><img src="https://img.shields.io/badge/Aplicações%20Web-2563EB?style=for-the-badge" alt="Aplicações Web"></a>
   <a href="./IA-e-Automacao"><img src="https://img.shields.io/badge/IA%20e%20Automação-7C3AED?style=for-the-badge" alt="IA e Automação"></a>
   <a href="./Machine-Learning"><img src="https://img.shields.io/badge/Machine%20Learning-16A34A?style=for-the-badge" alt="Machine Learning"></a>
@@ -15,57 +21,42 @@
 
 ## Sobre o repositório
 
-O **Projects** reúne projetos menores e médios em um único catálogo profissional. A organização é feita pelo **tipo de solução**, e não por camadas como front-end e back-end, porque uma mesma aplicação pode conter interface, API, banco de dados e integrações.
+O **Projects** reúne projetos menores e médios em um catálogo organizado pelo tipo de solução. Uma aplicação permanece inteira na mesma pasta, com interface, API, regras de negócio, persistência e integrações documentadas em conjunto.
 
-Projetos grandes e independentes permanecem em repositórios próprios.
+Projetos maiores e independentes permanecem em repositórios próprios.
 
 ## Projetos principais
 
-| Projeto | Descrição | Tecnologias | Status |
+| Projeto | Entrega | Tecnologias | Status |
 |---|---|---|---|
-| [Enterprise AI Assistant](https://github.com/Ruanrabello/enterprise-ai-assistant) | Plataforma full stack de IA corporativa com histórico, configuração de modelos e base para RAG | FastAPI, React, PostgreSQL, Ollama, Gemini e Grok | Projeto principal |
+| [Enterprise AI Assistant](https://github.com/Ruanrabello/enterprise-ai-assistant) | Plataforma full stack de IA corporativa com histórico, configuração de provedores e evolução para RAG | FastAPI, React, PostgreSQL, Ollama, Gemini e Grok | Projeto principal em evolução |
 | [Excel VBA Projects](https://github.com/Ruanrabello/Excel-vba-projects) | Automações para relatórios, tratamento de dados, PDFs e integração com Outlook | Excel e VBA | Repositório dedicado |
 
 ## Navegação por categorias
 
-| Categoria | Identidade | Projetos | Acesso |
+| Categoria | Foco | Projetos | Acesso |
 |---|---|---|---|
-| 🌐 Aplicações Web | Azul e ciano | Previsão do Tempo, Calculadora de Cashback | [Abrir](./Aplicacoes-Web) |
-| 🤖 IA e Automação | Roxo e laranja | Assistente Pessoal | [Abrir](./IA-e-Automacao) |
-| 📊 Machine Learning | Verde e roxo | Machine Learning & IA | [Abrir](./Machine-Learning) |
-| 🎮 Games | Vermelho e rosa neon | Neon Depths — Game Ball | [Abrir](./Games) |
+| 🌐 Aplicações Web | Produtos full stack, APIs e integrações | Previsão do Tempo, Calculadora de Cashback | [Abrir](./Aplicacoes-Web) |
+| 🤖 IA e Automação | Voz, comandos, APIs e tarefas automatizadas | Assistente Pessoal | [Abrir](./IA-e-Automacao) |
+| 📊 Machine Learning | Classificação, redes neurais e IA local | Machine Learning & IA | [Abrir](./Machine-Learning) |
+| 🎮 Games | Sistemas interativos e arquitetura de jogos | Neon Depths — Game Ball | [Abrir](./Games) |
 
 ## Catálogo interno
 
-### 🌐 Aplicações Web
-
 | Projeto | Descrição | Tecnologias | Status |
 |---|---|---|---|
-| [Previsão do Tempo](./Aplicacoes-Web/Previsao-Tempo) | Aplicação full stack para consultar dados meteorológicos, com interface responsiva, API própria e integração externa | FastAPI, HTML, CSS, JavaScript e OpenWeatherMap | Funcional e revisado |
-| [Calculadora de Cashback](./Aplicacoes-Web/Calculadora-Cashback) | Aplicação full stack para cálculo de cashback, cupons e histórico de consultas | FastAPI, SQLAlchemy, PostgreSQL, HTML e JavaScript | Funcional e revisado |
+| [Previsão do Tempo](./Aplicacoes-Web/Previsao-Tempo) | Consulta meteorológica com interface responsiva, API própria e integração externa | FastAPI, HTML, CSS, JavaScript e OpenWeatherMap | Funcional e revisado |
+| [Calculadora de Cashback](./Aplicacoes-Web/Calculadora-Cashback) | Regras de cashback, cupons, persistência, histórico e configuração por ambiente | FastAPI, SQLAlchemy, PostgreSQL, HTML, CSS e JavaScript | Funcional e revisado |
+| [Assistente Pessoal](./IA-e-Automacao/Assistente-Pessoal) | Voz, comandos locais, consulta à IA, busca de vídeos e histórico persistente | Python, Groq, SpeechRecognition e YouTube Data API | Protótipo funcional e revisado |
+| [Machine Learning & IA](./Machine-Learning/Machine-Learning-IA) | Classificação, redes neurais, comparação de modelos e agentes locais | Python, Scikit-learn, TensorFlow, LangChain e Ollama | Estudos reproduzíveis |
+| [Neon Depths — Game Ball](./Games/Game-Ball) | Roguelike com geração procedural, combate, progressão, áudio e salvamento | Python e Pygame | Funcional e revisado |
 
-### 🤖 IA e Automação
-
-| Projeto | Descrição | Tecnologias | Status |
-|---|---|---|---|
-| [Assistente Pessoal](./IA-e-Automacao/Assistente-Pessoal) | Assistente por voz que executa comandos locais, consulta IA, pesquisa vídeos e mantém histórico | Python, Groq, SpeechRecognition e YouTube Data API | Protótipo funcional e revisado |
-
-### 📊 Machine Learning
-
-| Projeto | Descrição | Tecnologias | Status |
-|---|---|---|---|
-| [Machine Learning & IA](./Machine-Learning/Machine-Learning-IA) | Laboratório com agentes locais, classificação, redes neurais e comparação entre modelos | Python, Pandas, NumPy, Scikit-learn, TensorFlow, LangChain e Ollama | Estudos aplicados |
-
-### 🎮 Games
-
-| Projeto | Descrição | Tecnologias | Status |
-|---|---|---|---|
-| [Neon Depths — Game Ball](./Games/Game-Ball) | Roguelike cyberpunk com geração procedural, inimigos, chefes, power-ups, conquistas e salvamento | Python e Pygame | Funcional |
-
-## Estrutura atual
+## Estrutura
 
 ```text
 Projects/
+├── .github/workflows/
+│   └── quality.yml
 ├── Aplicacoes-Web/
 │   ├── Previsao-Tempo/
 │   └── Calculadora-Cashback/
@@ -76,58 +67,33 @@ Projects/
 ├── Games/
 │   └── Game-Ball/
 ├── assets/
+├── .gitignore
 ├── README.md
 └── LICENSE
 ```
 
 ## Padrão de documentação
 
-Cada projeto relevante possui:
+Cada projeto relevante possui banner próprio, tecnologias utilizadas, visão geral, funcionalidades, arquitetura, estrutura de pastas, execução local, roadmap, licença e autor. Os READMEs das categorias também funcionam como páginas de navegação técnica, e não apenas como índices de diretório.
 
-- banner exclusivo em SVG;
-- badges das tecnologias realmente utilizadas;
-- descrição objetiva e funcionalidades;
-- arquitetura e estrutura de pastas;
-- instruções de execução local;
-- roadmap, licença e autor;
-- links de retorno ao catálogo principal.
+As pastas `assets` permanecem versionadas porque armazenam os recursos usados pelos READMEs. Removê-las quebraria banners e imagens.
 
-As pastas `assets` guardam apenas banners, screenshots e outros recursos usados pela documentação. Elas permanecem versionadas porque removê-las quebraria as imagens dos READMEs.
+## Qualidade aplicada
 
-## Padrão de nomes
+- Configurações sensíveis por variáveis de ambiente.
+- Dados pessoais, históricos e saves locais fora do Git.
+- Tratamento de falhas de rede, banco, áudio, microfone e serviços externos.
+- Código organizado por responsabilidade e com pontos de entrada explícitos.
+- Exemplos de Machine Learning com seeds, funções e execução reproduzível.
+- GitHub Actions para validar sintaxe Python, links internos e padrões comuns de credenciais.
 
-- Sem sufixos como `-main`, `Basic` ou `copy`.
-- Palavras separadas por hífen.
-- Nomes curtos, descritivos e consistentes.
-- Cada pasta representa uma solução completa, não apenas uma camada técnica.
+## Próximas melhorias
 
-## Boas práticas aplicadas
-
-- Dependências, ambientes virtuais, caches, builds e bancos locais não são versionados.
-- Chaves e credenciais são fornecidas por variáveis de ambiente.
-- Dados pessoais e históricos locais ficam fora do Git.
-- Cada projeto relevante possui descrição, tecnologias, status e instruções próprias.
-- Banners e recursos visuais ficam no `assets` do projeto correspondente.
-- Projetos grandes recebem um repositório dedicado.
-
-## Progresso da organização
-
-- [x] Remover arquivos gerados e dependências versionadas
-- [x] Separar o Enterprise AI Assistant
-- [x] Criar identidade visual e descrições
-- [x] Substituir categorias de camada por categorias de soluções completas
-- [x] Migrar e renomear fisicamente todas as pastas
-- [x] Remover pastas antigas e duplicadas da raiz
-- [x] Padronizar os READMEs dos projetos
-- [x] Revisar links internos, banners e licença
-- [x] Revisar Assistente Pessoal
-- [x] Revisar Previsão do Tempo
-- [x] Revisar Calculadora de Cashback
-- [x] Revisar Machine Learning & IA
-- [x] Revisar Game Ball
-- [x] Adicionar screenshot real à Calculadora de Cashback
-- [ ] Adicionar screenshot ou GIF real ao Previsão do Tempo
-- [ ] Adicionar screenshot ou GIF real ao Neon Depths
+- [ ] Adicionar testes unitários para as regras de cashback.
+- [ ] Adicionar testes para colisões e geração procedural do Neon Depths.
+- [ ] Adicionar screenshot atual do Previsão do Tempo.
+- [ ] Adicionar screenshot ou GIF real do Neon Depths.
+- [ ] Criar nova captura da interface redesenhada da Calculadora de Cashback.
 
 ## Autor
 
