@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-labelledby="title desc">
+  <title id="title">Neon Depths</title>
+  <desc id="desc">Roguelike cyberpunk desenvolvido em Python e Pygame</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#090014"/>
+      <stop offset="0.52" stop-color="#581c87"/>
+      <stop offset="1" stop-color="#be123c"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="84%" cy="35%" r="48%">
+      <stop offset="0" stop-color="#f0abfc" stop-opacity="0.56"/>
+      <stop offset="1" stop-color="#f0abfc" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="300" rx="24" fill="url(#bg)"/>
+  <rect width="1200" height="300" rx="24" fill="url(#glow)"/>
+  <g transform="translate(910 68)" fill="none" stroke="#fdf2f8" stroke-width="7" opacity="0.35">
+    <path d="M36 54c11-27 38-42 68-42h74c30 0 57 15 68 42l24 61c13 32-20 61-48 41l-35-26H95l-35 26c-28 20-61-9-48-41z"/>
+    <path d="M75 75v43M53 96h44M187 84h1M217 108h1" stroke-linecap="round"/>
+  </g>
+  <g font-family="Segoe UI, Arial, sans-serif">
+    <text x="72" y="78" fill="#f5d0fe" font-size="23" font-weight="700" letter-spacing="4">PYGAME • PROCEDURAL • CYBERPUNK</text>
+    <text x="72" y="154" fill="#ffffff" font-size="59" font-weight="800">NEON DEPTHS</text>
+    <text x="72" y="211" fill="#fce7f3" font-size="25">Roguelike com combate, chefes e progressão</text>
+    <text x="72" y="254" fill="#f9a8d4" font-size="18">PYTHON • GAME SYSTEMS • JSON</text>
+  </g>
+</svg>
