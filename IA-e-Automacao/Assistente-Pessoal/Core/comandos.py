@@ -1,113 +1,152 @@
-# ? Importa o modulu que permite que o python abra urls no navegador, como youtube etc
+import logging
 import os
+import subprocess
+import time
 import webbrowser
-import datetime  # ? módulo de data/hora
-# ? importa a função build da biblioteca googleapiclient. Esta função é crucial para conectar seu código à API de Dados do YouTube.
+from datetime import datetime
+from functools import lru_cache
+
+import pyautogui
 from googleapiclient.discovery import build
-import pyautogui  # ? Importa biblioteca que simula comandos do teclado
-import time  # ? Importa biblioteca com funçoes de tempo
+from googleapiclient.errors import HttpError
 
-YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY", "your-youtube-api-key-here")
-# ? Cria um objeto chamado youtube que será usado para fazer todas as chamadas à API, meio que o telefone para ligar para o servidor
-youtube = build("youtube", "v3", developerKey=YOUTUBE_API_KEY)
+from Config.keys import YOUTUBE_API_KEY
 
 
-def abrir_youtube():
+logger = logging.getLogger(__name__)
+
+
+@lru_cache(maxsize=1)
+def _get_youtube_client():
+    """Cria o cliente somente quando uma busca de vídeo é solicitada."""
+    if not YOUTUBE_API_KEY:
+        raise RuntimeError(
+            "A busca de vídeos não está configurada. Defina YOUTUBE_API_KEY no arquivo .env."
+        )
+
+    return build(
+        "youtube",
+        "v3",
+        developerKey=YOUTUBE_API_KEY,
+        cache_discovery=False,
+    )
+
+
+def abrir_youtube() -> str:
     webbrowser.open("https://www.youtube.com/")
     return "Abrindo YouTube."
 
 
-def Pausar_video():  # ? Função que pausa o video do youtube
+def pausar_video() -> str:
     pyautogui.press("k")
-    return "Video pausado."
+    return "Reprodução pausada ou retomada."
 
 
-def fechar_aba_atual():  # ? Função que vai fechar a aba atual do youtube para abrir outra
+def fechar_aba_atual() -> None:
     pyautogui.hotkey("ctrl", "w")
-    return ""
 
 
-def abrir_google():
-    webbrowser.open("https://www.google.com.br/index.html")
+def abrir_google() -> str:
+    webbrowser.open("https://www.google.com.br/")
     return "Abrindo Google."
 
 
-def dizer_hora():  # ? pega a hora atual e retorna uma string formatada.
-    # ?  retorna um objeto datetime com data e hora atuais e converte esse objeto em uma str formatada, %H = hora com 2 dígitos, %M = minuto com 2 dígitos
-    agora = datetime.datetime.now().strftime("%H:%M")
-    return f"Agora são {agora}"
+def dizer_hora() -> str:
+    agora = datetime.now().strftime("%H:%M")
+    return f"Agora são {agora}."
 
 
-# ? abre um programa no Windows pelo caminho completo.
-def abrir_programa(caminho):
+def abrir_calculadora() -> str:
+    if os.name != "nt":
+        return "O comando da calculadora está disponível apenas no Windows."
+
     try:
-        os.startfile(caminho)
-        return f"Abrindo programa em: {caminho}"
-    except Exception as e:
-        return f"Erro ao abrir o programa: {e}"
+        subprocess.Popen(["calc.exe"])
+    except OSError:
+        logger.exception("Não foi possível abrir a calculadora do Windows.")
+        return "Não consegui abrir a calculadora."
+
+    return "Abrindo calculadora."
 
 
-def buscar_video(termo):  # ? Busca o primeiro vídeo correspondente ao termo.
-    req = youtube.search().list(  # ? constrói a requisição para a API
-        q=termo,  # ? termo de busca
-        # ! especifica que quer o trecho snippet dos resultados (título/descrição).
-        part="snippet",
-        maxResults=1,  # ? pede só 1 resultado
-        type="video"  # ? restringe a busca a vídeos (não playlists ou canais)
-    )
-
-    res = req.execute()
-
-    if not res["items"]:  # ? resposta da API tem uma estrutura JSON; se nada for encontrado, none em caso de erro e tals
+def buscar_video(termo: str) -> str | None:
+    consulta = termo.strip()
+    if not consulta:
         return None
 
-    video_id = res["items"][0]["id"]["videoId"]
+    try:
+        resposta = (
+            _get_youtube_client()
+            .search()
+            .list(
+                q=consulta,
+                part="snippet",
+                maxResults=1,
+                type="video",
+            )
+            .execute()
+        )
+    except RuntimeError:
+        raise
+    except HttpError as error:
+        logger.warning("A YouTube Data API rejeitou a consulta: %s", error)
+        raise RuntimeError(
+            "A busca de vídeos está temporariamente indisponível."
+        ) from error
+    except Exception as error:
+        logger.exception("Falha inesperada ao buscar vídeo.")
+        raise RuntimeError(
+            "Não foi possível concluir a busca de vídeos."
+        ) from error
+
+    items = resposta.get("items", [])
+    if not items:
+        return None
+
+    video_id = items[0].get("id", {}).get("videoId")
+    if not video_id:
+        return None
+
     return f"https://www.youtube.com/watch?v={video_id}"
 
 
-def abrir_video(termo, fechar_anterior=True):
-    if fechar_anterior == True:
-        fechar_aba_atual()
-        time.sleep(0.5)
-    url = buscar_video(termo)  # ? chama a função para obter a url. 1- envia a requisição para a API do YouTube, 2- recebe a lista de resultados, 3- pega apenas o primeiro vídeo retornado, 4- extrai o videoId, 5- e monta a url(exempli: https://www.youtube.com/watch?v=VIDEO_ID_AQUI)
+def abrir_video(termo: str, fechar_anterior: bool = False) -> str:
+    try:
+        url = buscar_video(termo)
+    except RuntimeError as error:
+        return str(error)
 
     if not url:
-        return "Não encontrei esse vídeo. Verifique o nome ou sua API KEY."
+        return "Não encontrei um vídeo para esse termo."
+
+    if fechar_anterior:
+        fechar_aba_atual()
+        time.sleep(0.3)
 
     webbrowser.open(url)
     return f"Reproduzindo {termo} no YouTube."
 
 
-def interpretar_comando(texto):
-    texto = texto.lower()  # ? Deixa tudo em minusculo
+def interpretar_comando(texto: str) -> str | None:
+    comando = texto.strip().lower()
+    if not comando:
+        return None
 
-    # ? Palavras chaves para exexutar a função
-    comandos_musica = ["tocar", "ouvir", "reproduzir"]
+    for palavra in ("tocar", "ouvir", "reproduzir"):
+        prefixo = f"{palavra} "
+        if comando.startswith(prefixo):
+            termo_busca = comando[len(prefixo):].strip()
+            return abrir_video(termo_busca) if termo_busca else "Qual música você quer ouvir?"
 
-    for cmd in comandos_musica:  # ? Faz loop dentro da lista de palavras de ativação
-        if cmd in texto:  # ? Procura essa palavra no testo que vc falou
-            # ? ele pega o indice aonde esta a plavra de ativação
-            indice = texto.find(cmd)
-            # ? e pega o texto a frente(exemplo: tocar ride, ele pega ride para pesquisar)
-            termo_busca = texto[indice + len(cmd):].strip()
-
-            if termo_busca:
-                return abrir_video(termo_busca)
-            else:
-                return "Qual música você quer ouvir?"
-
-    # ----------------------------------
-    # 📌 Comandos básicos
-    # ----------------------------------
-    if "youtube" in texto:
+    if "youtube" in comando:
         return abrir_youtube()
-    elif "google" in texto:
+    if "google" in comando:
         return abrir_google()
-    elif "pausar" in texto or "despausar" in texto:
-        return Pausar_video()
-    elif "hora" in texto:
+    if "pausar" in comando or "despausar" in comando:
+        return pausar_video()
+    if "hora" in comando:
         return dizer_hora()
-    elif "calculadora" in texto:
-        return abrir_programa("C:\\Windows\\System32\\calc.exe")
+    if "calculadora" in comando:
+        return abrir_calculadora()
 
     return None
