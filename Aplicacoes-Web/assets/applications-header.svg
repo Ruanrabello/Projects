@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-labelledby="title desc">
+  <title id="title">Aplicações Web</title>
+  <desc id="desc">Aplicações full stack, APIs e integrações</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071B33"/><stop offset="0.55" stop-color="#0E7490"/><stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+    <pattern id="grid" width="38" height="38" patternUnits="userSpaceOnUse"><path d="M38 0H0V38" fill="none" stroke="#BAE6FD" stroke-opacity=".09"/></pattern>
+  </defs>
+  <rect width="1200" height="300" rx="24" fill="url(#bg)"/><rect width="1200" height="300" rx="24" fill="url(#grid)"/>
+  <g transform="translate(930 63)" fill="none" stroke="#E0F2FE" stroke-width="8" opacity=".72">
+    <rect width="190" height="142" rx="16"/><path d="M0 38h190M58 142v32m74-32v32M35 174h120"/>
+    <path d="m62 88 24-22m-24 22 24 22m42-44 24 22-24 22"/>
+  </g>
+  <g font-family="Segoe UI,Arial,sans-serif">
+    <text x="70" y="82" fill="#A5F3FC" font-size="23" font-weight="700" letter-spacing="4">FULL STACK • APIs • INTEGRAÇÕES</text>
+    <text x="70" y="160" fill="#FFFFFF" font-size="62" font-weight="800">APLICAÇÕES WEB</text>
+    <text x="70" y="215" fill="#DBEAFE" font-size="25">Interfaces, regras de negócio, persistência e serviços externos</text>
+    <text x="70" y="258" fill="#BAE6FD" font-size="18">FASTAPI • JAVASCRIPT • POSTGRESQL</text>
+  </g>
+</svg>
