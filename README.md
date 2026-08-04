@@ -28,12 +28,12 @@ Projetos grandes e independentes permanecem em repositórios próprios.
 
 ## Navegação por categorias
 
-| Categoria | Cor | Projetos | Acesso |
-|---|---:|---|---|
-| 🌐 Aplicações Web | Azul/ciano | Previsão do Tempo, Calculadora de Cashback | [Abrir](./Aplicacoes-Web) |
-| 🤖 IA e Automação | Roxo/laranja | Assistente Pessoal | [Abrir](./IA-e-Automacao) |
-| 📊 Dados e Machine Learning | Verde/roxo | Machine Learning & IA | [Abrir](./Dados-e-Machine-Learning) |
-| 🎮 Games | Vermelho | Game Ball | [Abrir](./Games) |
+| Categoria | Identidade | Projetos | Acesso |
+|---|---|---|---|
+| 🌐 Aplicações Web | Azul e ciano | Previsão do Tempo, Calculadora de Cashback | [Abrir](./Aplicacoes-Web) |
+| 🤖 IA e Automação | Roxo e laranja | Assistente Pessoal | [Abrir](./IA-e-Automacao) |
+| 📊 Dados e Machine Learning | Verde e roxo | Machine Learning & IA | [Abrir](./Dados-e-Machine-Learning) |
+| 🎮 Games | Vermelho e rosa neon | Neon Depths — Game Ball | [Abrir](./Games) |
 
 ## Catálogo interno
 
@@ -41,28 +41,28 @@ Projetos grandes e independentes permanecem em repositórios próprios.
 
 | Projeto | Descrição | Tecnologias | Status |
 |---|---|---|---|
-| [Previsão do Tempo](./Previsao-Tempo) | Aplicação full stack para consultar dados meteorológicos, com interface responsiva e API própria | FastAPI, HTML, CSS, JavaScript e OpenWeatherMap | Funcional e revisado |
-| [Calculadora de Cashback](./Calculadora_Cashback) | Aplicação web para cálculo de cashback com regras de negócio expostas por API | Python, API REST e HTML | Concluído |
+| [Previsão do Tempo](./Aplicacoes-Web/Previsao-Tempo) | Aplicação full stack para consultar dados meteorológicos, com interface responsiva, API própria e integração externa | FastAPI, HTML, CSS, JavaScript e OpenWeatherMap | Funcional e revisado |
+| [Calculadora de Cashback](./Aplicacoes-Web/Calculadora-Cashback) | Aplicação full stack para cálculo de cashback, cupons e histórico de consultas | FastAPI, SQLAlchemy, PostgreSQL, HTML e JavaScript | Funcional e revisado |
 
 ### 🤖 IA e Automação
 
 | Projeto | Descrição | Tecnologias | Status |
 |---|---|---|---|
-| [Assistente Pessoal](./Assistente-Pessoal-main) | Assistente por voz que executa comandos locais, consulta IA, pesquisa vídeos e mantém histórico | Python, Groq, reconhecimento de voz e YouTube API | Protótipo funcional e revisado |
+| [Assistente Pessoal](./IA-e-Automacao/Assistente-Pessoal) | Assistente por voz que executa comandos locais, consulta IA, pesquisa vídeos e mantém histórico | Python, Groq, SpeechRecognition e YouTube Data API | Protótipo funcional e revisado |
 
 ### 📊 Dados e Machine Learning
 
 | Projeto | Descrição | Tecnologias | Status |
 |---|---|---|---|
-| [Machine Learning & IA](./MachineLearnind_IA_Projects) | Laboratório de preparação de dados, classificação e comparação de modelos | Python, Pandas e Scikit-learn | Estudos aplicados |
+| [Machine Learning & IA](./Dados-e-Machine-Learning/Machine-Learning-IA) | Laboratório com agentes locais, classificação, redes neurais e comparação entre modelos | Python, Pandas, NumPy, Scikit-learn, TensorFlow, LangChain e Ollama | Estudos aplicados |
 
 ### 🎮 Games
 
 | Projeto | Descrição | Tecnologias | Status |
 |---|---|---|---|
-| [Game Ball](./Game-BallBasic) | Jogo criado para praticar eventos, colisões, movimentação, efeitos e sistemas de salvamento | Python e Pygame | Concluído |
+| [Neon Depths — Game Ball](./Games/Game-Ball) | Roguelike cyberpunk com geração procedural, inimigos, chefes, power-ups, conquistas e salvamento | Python e Pygame | Funcional |
 
-## Estrutura final
+## Estrutura atual
 
 ```text
 Projects/
@@ -85,28 +85,29 @@ Projects/
 - Sem sufixos como `-main`, `Basic` ou `copy`.
 - Palavras separadas por hífen.
 - Nomes curtos, descritivos e consistentes.
-- Pastas de projeto representam soluções completas, não apenas uma camada técnica.
+- Cada pasta representa uma solução completa, não apenas uma camada técnica.
 
 ## Boas práticas aplicadas
 
 - Dependências, ambientes virtuais, caches, builds e bancos locais não são versionados.
-- Chaves e credenciais devem ser fornecidas por variáveis de ambiente.
+- Chaves e credenciais são fornecidas por variáveis de ambiente.
+- Dados pessoais e históricos locais ficam fora do Git.
 - Cada projeto relevante possui descrição, tecnologias, status e instruções próprias.
 - Projetos grandes recebem um repositório dedicado.
 
-## Próximas melhorias
+## Progresso da organização
 
 - [x] Remover arquivos gerados e dependências versionadas
 - [x] Separar o Enterprise AI Assistant
 - [x] Criar identidade visual e descrições
-- [x] Substituir categorias `Backend` e `Frontend` por categorias de projetos completos
+- [x] Substituir categorias de camada por categorias de soluções completas
+- [x] Migrar e renomear fisicamente todas as pastas
 - [x] Revisar Assistente Pessoal
 - [x] Revisar Previsão do Tempo
-- [ ] Migrar fisicamente e renomear todas as pastas
-- [ ] Revisar Calculadora de Cashback
-- [ ] Revisar Machine Learning & IA
-- [ ] Revisar Game Ball
-- [ ] Adicionar screenshots aos projetos com interface
+- [x] Revisar Calculadora de Cashback
+- [x] Revisar Machine Learning & IA
+- [x] Revisar Game Ball
+- [ ] Adicionar screenshots ou GIFs aos projetos com interface
 
 ## Autor
 
