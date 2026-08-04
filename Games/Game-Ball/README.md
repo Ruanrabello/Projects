@@ -21,24 +21,23 @@
 
 **Neon Depths** é um jogo de ação em perspectiva superior inspirado em roguelikes e shooters arcade. O jogador explora masmorras geradas proceduralmente, enfrenta inimigos com comportamentos diferentes, coleta power-ups e avança por andares cada vez mais difíceis.
 
-O projeto foi estruturado em sistemas independentes para demonstrar organização de código em jogos, gerenciamento de estados, colisões, câmera, áudio, interface, persistência e progressão.
+O projeto divide gameplay, apresentação e infraestrutura em sistemas independentes. O suporte a áudio e gamepad é defensivo: a ausência de dispositivo de som ou um controle com menos eixos não impede o jogo de iniciar.
 
 ## Principais funcionalidades
 
 | Sistema | Descrição |
 |---|---|
-| Combate | Mira com mouse, disparos, dano, dash e invencibilidade temporária |
-| Geração procedural | Cria salas, corredores, pontos de spawn e saídas de andar |
-| Inimigos | Tipos com atributos, perseguição, ataque, desvio e escalonamento |
-| Chefes | Bosses em andares definidos pela progressão |
-| Progressão | Experiência, níveis, pontuação e aumento de dificuldade |
-| Power-ups | Vida, energia, dano, velocidade e escudo |
-| Interface | HUD, notificações, números de dano e telas de menu |
-| Persistência | Save local, leaderboard e conquistas em JSON |
+| Combate | Mira, disparos, dano, dash e invencibilidade temporária |
+| Geração procedural | Cria salas, corredores, spawns e saídas de andar |
+| Inimigos e chefes | Comportamentos, escalonamento de dificuldade e bosses periódicos |
+| Progressão | Experiência, níveis, pontuação e power-ups |
+| Interface | HUD, menus, notificações e números de dano |
+| Persistência | Save, leaderboard e conquistas em JSON |
 | Apresentação | Partículas, iluminação, screen shake e áudio procedural |
-| Display | Janela redimensionável, tela cheia e suporte a ultrawide com letterbox |
+| Display | Janela redimensionável, tela cheia e ultrawide com letterbox |
+| Entrada | Teclado, mouse e gamepad com dead zone |
 
-## Arquitetura do projeto
+## Arquitetura
 
 ```text
 Entrada e estados
@@ -53,18 +52,16 @@ main.py ─────────────── menu.py
   ├── ui.py
   │
   ├── effects/  → partículas e iluminação
-  └── utils/    → câmera, áudio, colisão, display e persistência
+  └── utils/    → câmera, áudio, colisão, display, input e persistência
 ```
 
-## Estrutura de pastas
+## Estrutura
 
 ```text
 Game-Ball/
 ├── assets/
 │   └── neon-depths-header.svg
 ├── effects/
-│   ├── lighting.py
-│   └── particles.py
 ├── utils/
 │   ├── achievements.py
 │   ├── audio.py
@@ -91,25 +88,18 @@ Game-Ball/
 
 | Ação | Controle |
 |---|---|
-| Movimentação | `WASD` ou setas |
-| Mira e disparo | Mouse |
-| Dash | Espaço |
-| Pausa | `Esc` ou `P` |
+| Movimentação | `WASD`, setas ou analógico esquerdo |
+| Mira | Mouse ou analógico direito |
+| Disparo | Mouse |
+| Dash | Espaço ou botão principal do gamepad |
+| Pausa | `Esc`, `P` ou Start |
 | Tela cheia | `F11` |
-| Confirmar menus | Enter |
 
 ## Como executar localmente
-
-### 1. Clonar o catálogo
 
 ```bash
 git clone https://github.com/Ruanrabello/Projects.git
 cd Projects/Games/Game-Ball
-```
-
-### 2. Criar e ativar o ambiente
-
-```bash
 python -m venv .venv
 ```
 
@@ -118,6 +108,7 @@ No Windows:
 ```powershell
 .venv\Scripts\activate
 pip install -r requirements.txt
+python main.py
 ```
 
 No Linux ou macOS:
@@ -125,28 +116,23 @@ No Linux ou macOS:
 ```bash
 source .venv/bin/activate
 pip install -r requirements.txt
-```
-
-### 3. Iniciar o jogo
-
-```bash
 python main.py
 ```
 
+Caso nenhum dispositivo de áudio esteja disponível, o jogo continua sem som.
+
 ## Dados locais
 
-Os arquivos de save, leaderboard e conquistas são criados automaticamente dentro de `saves/`. Esses dados pertencem ao ambiente local e não precisam ser versionados.
+Os arquivos de save, leaderboard e conquistas são criados em `saves/` e permanecem fora do Git. O save combina configurações antigas com novos valores padrão e é gravado de forma atômica para reduzir risco de corrupção.
 
 ## Roadmap
 
-- [x] Implementar combate, dash e progressão.
-- [x] Criar mapas procedurais e chefes.
+- [x] Implementar combate, dash, progressão, chefes e mapas procedurais.
 - [x] Adicionar save, leaderboard e conquistas.
-- [x] Implementar partículas, iluminação e áudio procedural.
+- [x] Tornar áudio, gamepad e persistência mais resilientes.
 - [ ] Adicionar screenshot ou GIF real da jogabilidade.
 - [ ] Criar testes para colisões e geração de mapas.
 - [ ] Adicionar novos inimigos, armas e biomas.
-- [ ] Criar tela de seleção de personagem.
 - [ ] Empacotar uma versão executável para Windows.
 
 ## Licença
