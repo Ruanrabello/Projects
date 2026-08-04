@@ -1,9 +1,16 @@
 # 🎮 Games
 
-Projetos desenvolvidos para praticar lógica, eventos, colisões e organização de código em jogos.
+Projetos desenvolvidos para praticar lógica, eventos, colisões, inteligência de inimigos e organização de sistemas de jogos.
 
 ## Projetos
 
-- [Game Ball](../Game-BallBasic) — jogo simples desenvolvido em Python com Pygame.
+| Projeto | Descrição | Tecnologias | Status |
+|---|---|---|---|
+| [Neon Depths — Game Ball](./Game-Ball) | Roguelike cyberpunk com geração procedural, combate, inimigos, chefes, power-ups, conquistas, leaderboard e salvamento local | Python, Pygame e JSON | Funcional |
 
-> Os projetos serão migrados gradualmente para dentro desta categoria mantendo histórico e arquivos intactos.
+## Identidade visual
+
+- Cor principal: vermelho `#DC2626`
+- Cor de apoio: rosa neon `#EC4899`
+
+O jogo gera sprites e efeitos por código, reduzindo a dependência de arquivos externos.
