@@ -1,14 +1,16 @@
 # 📊 Dados e Machine Learning
 
-Estudos e experimentos com preparação de dados, classificação, análise e modelos de aprendizado de máquina.
+Estudos e experimentos com preparação de dados, classificação, redes neurais e modelos de aprendizado de máquina.
 
 ## Projetos
 
-- [Machine Learning & IA](../MachineLearnind_IA_Projects) — laboratório com Python, Pandas, Scikit-learn e diferentes abordagens de classificação.
+| Projeto | Descrição | Tecnologias | Status |
+|---|---|---|---|
+| [Machine Learning & IA](./Machine-Learning-IA) | Laboratório com agentes locais, classificação de flores, detecção de toxicidade e comparação entre modelos clássicos e redes neurais | Python, Pandas, NumPy, Scikit-learn, TensorFlow, LangChain e Ollama | Estudos aplicados |
 
 ## Identidade visual
 
 - Cor principal: verde `#16A34A`
 - Cor de apoio: roxo `#7C3AED`
 
-> A pasta será renomeada para `Machine-Learning-IA` durante a migração física.
+Os datasets usados pelos exemplos ficam dentro do próprio projeto para evitar dependência de caminhos locais do computador.
