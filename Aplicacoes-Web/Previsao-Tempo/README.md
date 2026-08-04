@@ -20,24 +20,24 @@
 
 ## Visão geral
 
-O **Previsão do Tempo** combina uma API em FastAPI com uma interface web responsiva. O usuário informa uma cidade e recebe temperatura, sensação térmica, umidade, vento, pressão atmosférica e uma descrição das condições atuais.
+O **Previsão do Tempo** combina uma API em FastAPI com uma interface responsiva. A consulta retorna cidade, país, temperatura, sensação térmica, umidade, vento, pressão e descrição das condições atuais.
 
-O projeto demonstra consumo seguro de API externa, validação de entrada, tratamento de erros, timeout, CORS e integração entre front-end e back-end.
+A interface foi revisada para corrigir estilos inválidos, melhorar contraste e acessibilidade, manter o botão de reset dentro do painel e substituir o antigo alerta de “Ver Tudo” por um resumo em `dialog`.
 
 ## Principais funcionalidades
 
 | Recurso | Descrição |
 |---|---|
 | Consulta por cidade | Busca as condições meteorológicas atuais |
-| Cards navegáveis | Organiza os dados em uma interface interativa |
-| Imagens temáticas | Adapta o visual ao tipo de informação exibida |
-| Validação | Verifica o nome da cidade antes da consulta |
-| Timeout | Cancela requisições demoradas no navegador e na API |
+| Cards navegáveis | Permite avançar, voltar ou selecionar cada detalhe |
+| Imagens temáticas | Usa fundos existentes conforme temperatura e condição |
+| Resumo completo | Exibe todos os dados em uma janela de diálogo |
+| Validação | Aplica as mesmas regras no navegador e na API |
+| Timeout | Cancela requisições demoradas no front-end e back-end |
 | Tratamento de erros | Diferencia cidade inexistente, chave inválida e falha externa |
-| Health check | Informa se a API está disponível e configurada |
-| Reset de interface | Limpa a busca e devolve o foco ao campo de cidade |
+| Acessibilidade | Labels, estados de carregamento e navegação por teclado |
 
-## Arquitetura do projeto
+## Arquitetura
 
 ```text
 Navegador
@@ -46,12 +46,12 @@ Navegador
 HTML + CSS + JavaScript
    ▼
 FastAPI
-   │ HTTPS
+   │ HTTPS + timeout
    ▼
 OpenWeatherMap
 ```
 
-## Estrutura de pastas
+## Estrutura
 
 ```text
 Previsao-Tempo/
@@ -73,17 +73,9 @@ Previsao-Tempo/
 
 ## Como executar localmente
 
-### 1. Clonar o catálogo
-
 ```bash
 git clone https://github.com/Ruanrabello/Projects.git
-cd Projects/Aplicacoes-Web/Previsao-Tempo
-```
-
-### 2. Preparar o back-end
-
-```bash
-cd Backend
+cd Projects/Aplicacoes-Web/Previsao-Tempo/Backend
 python -m venv .venv
 ```
 
@@ -103,7 +95,7 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
-Configure a chave no arquivo `.env`:
+Configure:
 
 ```env
 API_KEY=sua_chave_openweather
@@ -115,14 +107,10 @@ Inicie a API:
 uvicorn main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-A documentação estará em `http://127.0.0.1:8000/docs`.
-
-### 3. Iniciar o front-end
-
 Em outro terminal:
 
 ```bash
-cd Frontend
+cd ../Frontend
 python -m http.server 3000
 ```
 
@@ -133,33 +121,31 @@ Acesse `http://localhost:3000`.
 | Método | Endpoint | Descrição |
 |---|---|---|
 | GET | `/weather/{city}` | Retorna as condições atuais da cidade |
-| GET | `/health` | Verifica a API e informa se a chave está configurada |
+| GET | `/health` | Informa se a API e a chave externa estão configuradas |
 
 ## Segurança e confiabilidade
 
-- A chave da OpenWeather permanece fora do código.
-- A API não realiza consultas externas sem configuração válida.
-- O CORS é limitado aos servidores locais usados pelo projeto.
-- Requisições externas e consultas do navegador possuem timeout.
-- Respostas inválidas e falhas do serviço externo são tratadas.
+- A chave da OpenWeather fica fora do código.
+- A API não consulta o serviço externo sem configuração válida.
+- O CORS é limitado aos ambientes locais documentados.
+- Respostas não JSON, dados numéricos inválidos e falhas externas são tratados.
+- O front-end só usa imagens que existem dentro do projeto.
 
 ## Limitações atuais
 
-- Exibe somente as condições atuais.
-- O endereço da API usa `localhost` por padrão.
-- Ainda não possui testes automatizados.
-- Não possui screenshot real versionado no momento.
+- Exibe apenas as condições atuais.
+- A URL padrão do back-end é local.
+- Ainda não possui testes automatizados nem deploy documentado.
+- Uma captura real da interface redesenhada ainda precisa ser adicionada.
 
 ## Roadmap
 
-- [x] Corrigir tratamento de cidades inexistentes.
-- [x] Validar ausência ou rejeição da API key.
-- [x] Implementar timeout real no front-end.
-- [x] Corrigir navegação, reset e botão “Ver Tudo”.
-- [x] Organizar o projeto em `Backend` e `Frontend`.
-- [ ] Adicionar screenshot ou GIF da interface.
-- [ ] Adicionar previsão de cinco dias.
-- [ ] Adicionar geolocalização.
+- [x] Corrigir tratamento de cidades inexistentes e chave inválida.
+- [x] Implementar timeout e validação nas duas camadas.
+- [x] Redesenhar a interface e corrigir CSS inválido.
+- [x] Substituir o alerta por um resumo acessível.
+- [ ] Adicionar screenshot ou GIF da interface atual.
+- [ ] Adicionar previsão de cinco dias e geolocalização.
 - [ ] Criar testes automatizados.
 - [ ] Preparar configuração para deploy.
 
