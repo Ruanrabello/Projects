@@ -3,119 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Consulte condições meteorológicas atuais por cidade.">
     <title>Previsão do Tempo</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
     <main class="weather-app">
-        <div class="Weather-container">
-
-            <section class="weather-card">
-                <div class="weather-header">
-                    <div class="weather-icon">☀️</div>
+        <div class="weather-container">
+            <section class="weather-card" aria-labelledby="weather-title">
+                <header class="weather-header">
+                    <div class="weather-icon" aria-hidden="true">☀️</div>
                     <div>
-                        <h1>Configuração do Clima</h1>
-                        <p class="subtitle">Escolha a cidade para sua previsão detalhada</p>
+                        <h1 id="weather-title">Previsão do Tempo</h1>
+                        <p class="subtitle">Consulte as condições atuais de uma cidade.</p>
                     </div>
-                </div>
+                </header>
 
-                <form id="weather-form" method="post">
+                <form id="weather-form">
                     <label for="cidade">Cidade</label>
                     <input
                         type="text"
                         id="cidade"
                         name="cidade"
-                        placeholder="São Paulo"
+                        placeholder="Ex.: Rio de Janeiro"
                         required
                         autocomplete="off"
                         minlength="2"
                         maxlength="50"
                     >
                     <button type="submit" id="submit-btn">
-                        <span class="search-icon">🔍</span> Obter Previsão Completa
+                        <span aria-hidden="true">🔍</span>
+                        Consultar previsão
                     </button>
                 </form>
 
-                <div id="loader" class="loader" style="display: none;">
-                    <div class="spinner"></div>
+                <div id="loader" class="loader" role="status" aria-live="polite" hidden>
+                    <div class="spinner" aria-hidden="true"></div>
                     <p>Buscando previsão...</p>
                 </div>
 
-                <div id="error-message" class="error-message" style="display: none;">
+                <div id="error-message" class="error-message" role="alert" hidden>
                     <span id="error-text"></span>
                 </div>
 
                 <footer class="weather-footer">
-                    <p>Abaixo, explore os detalhes passo a passo.</p>
-                    <p class="highlight-footer">Rápido, detalhado e intuitivo.</p>
+                    <p>Dados fornecidos pela OpenWeatherMap.</p>
+                    <p class="highlight-footer">Consulta rápida, responsiva e segura.</p>
                 </footer>
             </section>
 
-            <section class="forecast-panel" id="forecast-panel" style="display: none;">
-                <div class="cabecalho">
-                    <h2>
-                        Detalhes do Clima:
-                        <span id="city-title-header">---</span>
+            <section class="forecast-panel" id="forecast-panel" aria-labelledby="forecast-title" hidden>
+                <header class="forecast-header">
+                    <h2 id="forecast-title">
+                        Condições em <span id="city-title-header">---</span>
                     </h2>
-
-                    <button id="botao-reset" class="botao-reset">
-                         ↻
-                    </button>
-                </div>
+                    <button id="botao-reset" class="reset-button" type="button" aria-label="Limpar consulta">↻</button>
+                </header>
 
                 <div class="forecast-card">
-                    <button id="prev-btn" class="nav-btn">‹</button>
+                    <button id="prev-btn" class="nav-btn" type="button" aria-label="Detalhe anterior">‹</button>
 
-                    <div id="card-content">
+                    <div id="card-content" aria-live="polite">
                         <h3 id="card-title">Aguardando busca</h3>
                         <p id="card-value">Digite uma cidade</p>
                     </div>
 
-                    <button id="next-btn" class="nav-btn">›</button>
+                    <button id="next-btn" class="nav-btn" type="button" aria-label="Próximo detalhe">›</button>
                 </div>
 
-                <div class="weather-options-bar">
-                    <button class="option-btn" data-index="0">
-                        <span class="option-icon">🌍</span>
-                        <span class="option-label">Cidade</span>
-                    </button>
-                    <button class="option-btn" data-index="1">
-                        <span class="option-icon">🌡️</span>
-                        <span class="option-label">Temp</span>
-                    </button>
-                    <button class="option-btn" data-index="2">
-                        <span class="option-icon">☁️</span>
-                        <span class="option-label">Descrição</span>
-                    </button>
-                    <button class="option-btn" data-index="3">
-                        <span class="option-icon">💧</span>
-                        <span class="option-label">Umidade</span>
-                    </button>
-                    <button class="option-btn" data-index="4">
-                        <span class="option-icon">🤗</span>
-                        <span class="option-label">Sensação</span>
-                    </button>
-                    <button class="option-btn" data-index="5">
-                        <span class="option-icon">💨</span>
-                        <span class="option-label">Vento</span>
-                    </button>
-                    <button class="option-btn" data-index="6">
-                        <span class="option-icon">📈</span>
-                        <span class="option-label">Pressão</span>
-                    </button>
+                <div class="weather-options-bar" aria-label="Detalhes meteorológicos">
+                    <button class="option-btn" type="button" data-index="0"><span class="option-icon">🌍</span><span class="option-label">Cidade</span></button>
+                    <button class="option-btn" type="button" data-index="1"><span class="option-icon">🌡️</span><span class="option-label">Temperatura</span></button>
+                    <button class="option-btn" type="button" data-index="2"><span class="option-icon">☁️</span><span class="option-label">Descrição</span></button>
+                    <button class="option-btn" type="button" data-index="3"><span class="option-icon">💧</span><span class="option-label">Umidade</span></button>
+                    <button class="option-btn" type="button" data-index="4"><span class="option-icon">🤗</span><span class="option-label">Sensação</span></button>
+                    <button class="option-btn" type="button" data-index="5"><span class="option-icon">💨</span><span class="option-label">Vento</span></button>
+                    <button class="option-btn" type="button" data-index="6"><span class="option-icon">📈</span><span class="option-label">Pressão</span></button>
                 </div>
 
-                <div id="pagination" class="pagination"></div>
+                <div id="pagination" class="pagination" aria-label="Paginação dos detalhes"></div>
 
-                <div class="ver-tudo-container">
-                    <button class="ver-tudo-btn">Ver Tudo</button>
+                <div class="show-all-container">
+                    <button id="show-all-btn" class="show-all-button" type="button">Ver todos os detalhes</button>
                 </div>
             </section>
-
         </div>
     </main>
 
-    <script src="script.js"></script>
+    <dialog id="all-weather-dialog" class="weather-dialog" aria-labelledby="all-weather-title">
+        <div class="dialog-header">
+            <h2 id="all-weather-title">Resumo da previsão</h2>
+            <button id="close-dialog-btn" type="button" aria-label="Fechar resumo">×</button>
+        </div>
+        <dl id="all-weather-list" class="weather-summary"></dl>
+    </dialog>
 </body>
 </html>
