@@ -2,6 +2,10 @@
 
 Projetos completos que combinam interface, API, regras de negócio, persistência e integrações externas.
 
+<p align="center">
+  <a href="../README.md">← Voltar ao catálogo principal</a>
+</p>
+
 ## Projetos
 
 | Projeto | Descrição | Tecnologias | Status |
