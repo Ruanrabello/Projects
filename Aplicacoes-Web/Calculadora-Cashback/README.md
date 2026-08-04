@@ -20,18 +20,16 @@
 
 ## Visão geral
 
-A **Calculadora de Cashback** combina uma API em FastAPI, persistência com SQLAlchemy e uma interface web responsiva. O usuário informa o tipo de cliente, o valor da compra e o percentual de desconto; a aplicação calcula o cashback e registra a operação no banco de dados.
+A **Calculadora de Cashback** combina uma API em FastAPI, persistência com SQLAlchemy e uma interface web responsiva. O usuário informa o tipo de cliente, o valor da compra e o percentual de desconto; a aplicação calcula o valor final, determina o cashback e registra a operação no banco de dados.
 
-O projeto demonstra regras de negócio, validação de dados, integração entre front-end e back-end, persistência em PostgreSQL e tratamento de falhas de banco.
+O projeto demonstra regras de negócio, validação de dados, cálculo monetário com `Decimal`, configuração por ambiente, integração entre front-end e back-end e tratamento de falhas de banco e rede.
 
 ## Demonstração
 
-<p align="center">
-  <img src="./assets/cashback-interface.png" width="82%" alt="Interface da Calculadora de Cashback">
-</p>
-
 - [Abrir aplicação web](https://calculadora-cashback-w34p.vercel.app)
 - [Abrir documentação Swagger da API](https://calculadora-cashback-csom.onrender.com/docs)
+
+> A captura anterior foi removida após o redesign da interface. Uma nova imagem será adicionada somente quando representar a versão atual.
 
 ## Principais funcionalidades
 
@@ -40,10 +38,11 @@ O projeto demonstra regras de negócio, validação de dados, integração entre
 | Cálculo de cashback | Calcula o benefício sobre o valor final da compra |
 | Clientes Normal e VIP | Aplica regras diferentes conforme o perfil selecionado |
 | Cupons | Desconta o percentual informado antes de calcular o cashback |
-| Histórico | Retorna as dez consultas mais recentes associadas ao IP |
-| Persistência | Salva os cálculos por meio de SQLAlchemy |
-| Validação | Rejeita valores, cupons e tipos de cliente inválidos |
-| Health check | Expõe um endpoint simples para verificar a disponibilidade da API |
+| Histórico | Retorna as dez consultas mais recentes associadas ao acesso |
+| Persistência | Salva os cálculos por meio de SQLAlchemy e PostgreSQL |
+| Validação | Normaliza o tipo de cliente e rejeita valores ou cupons inválidos |
+| Health check | Verifica a API e a conexão com o banco de dados |
+| Ambiente automático | Usa API local em `localhost` e produção fora do ambiente local |
 
 ## Regras de negócio
 
@@ -51,6 +50,7 @@ O projeto demonstra regras de negócio, validação de dados, integração entre
 - Compras com valor final a partir de **R$ 500** recebem **10%**.
 - Clientes VIP recebem **10% de bônus sobre o cashback calculado**.
 - O cupom é aplicado antes do cálculo do benefício.
+- Valores monetários são arredondados para duas casas decimais.
 
 ## Arquitetura
 
@@ -59,7 +59,7 @@ Navegador
    │ POST /calcular-cashback
    │ GET  /historico
    ▼
-HTML + JavaScript
+HTML + CSS + JavaScript
    ▼
 FastAPI + Pydantic
    ▼
@@ -73,10 +73,11 @@ PostgreSQL
 ```text
 Calculadora-Cashback/
 ├── assets/
-│   ├── cashback-header.svg
-│   └── cashback-interface.png
+│   └── cashback-header.svg
 ├── main.py
 ├── index.html
+├── style.css
+├── app.js
 ├── requirements.txt
 ├── .env.example
 └── README.md
@@ -113,10 +114,11 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
-Configure a conexão no arquivo `.env`:
+Configure o arquivo `.env`:
 
 ```env
 DATABASE_URL=postgresql://usuario:senha@host:5432/banco
+ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
 ```
 
 ### 3. Iniciar a API
@@ -129,30 +131,33 @@ A documentação estará em `http://127.0.0.1:8000/docs`.
 
 ### 4. Iniciar a interface
 
+Em outro terminal, dentro da pasta do projeto:
+
 ```bash
 python -m http.server 3000
 ```
 
-Acesse `http://localhost:3000`. Para usar a API local, altere temporariamente `API_URL` no `index.html` para `http://127.0.0.1:8000`.
+Acesse `http://localhost:3000`. O JavaScript seleciona automaticamente `http://127.0.0.1:8000` nesse ambiente.
 
 ## Endpoints
 
 | Método | Endpoint | Descrição |
 |---|---|---|
-| GET | `/health` | Verifica se a API está disponível |
-| POST | `/calcular-cashback` | Calcula e salva o cashback |
-| GET | `/historico` | Retorna as últimas consultas do cliente |
+| GET | `/health` | Verifica a API e a conexão com o banco |
+| POST | `/calcular-cashback` | Calcula e salva o valor final e o cashback |
+| GET | `/historico` | Retorna as últimas consultas do acesso atual |
 
 ## Roadmap
 
 - [x] Implementar cálculo para clientes Normal e VIP.
 - [x] Adicionar cupons e histórico.
-- [x] Proteger a conexão do banco com variável de ambiente.
-- [x] Adicionar validações e tratamento de falhas.
-- [x] Adicionar screenshot da aplicação.
-- [ ] Separar HTML, CSS e JavaScript em arquivos próprios.
-- [ ] Permitir configuração automática da URL da API.
+- [x] Proteger banco e CORS com variáveis de ambiente.
+- [x] Adicionar validações, timeout e tratamento de falhas.
+- [x] Separar HTML, CSS e JavaScript.
+- [x] Configurar automaticamente a URL local ou de produção.
 - [ ] Adicionar testes unitários para as regras de negócio.
+- [ ] Criar uma nova captura da interface atual.
+- [ ] Adicionar migrações de banco com Alembic.
 
 ## Licença
 
